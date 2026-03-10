@@ -489,6 +489,12 @@
     align-items: center;
     gap: 10px;
   }
+  .pc-core, .pc-utils {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .pc-utils { margin-left: 4px; }
   .btn-ctrl {
     background: none;
     border: 1px solid var(--border);
@@ -618,97 +624,159 @@
   }
 
   /* ══════════════════════════════════════
-     MOBILE RESPONSIVE
+     MOBILE RESPONSIVE  ≤ 720px
   ══════════════════════════════════════ */
   @media (max-width: 720px) {
-    /* Hide desktop nav, show hamburger */
+
+    /* ── Nav ── */
     .chapter-nav { display: none; }
     #navHamburger { display: flex; }
-    body { padding-bottom: 140px; }
 
-    /* Player bar: two-row layout */
+    /* ── Body: extra padding for 4-row player bar ── */
+    body { padding-bottom: 200px; }
+
+    /* ─────────────────────────────────────────
+       PLAYER BAR  (info | progress | core | utils)
+    ───────────────────────────────────────── */
     .player-bar {
-      padding: 10px 12px 14px;
-      gap: 8px;
+      padding: 8px 14px 10px;
       flex-direction: column;
+      gap: 5px;
       align-items: stretch;
     }
+    /* Row 1: one-line info */
     .player-info {
-      display: flex; flex-direction: column;
-      min-width: 0;
+      display: flex; flex-direction: row; align-items: center;
+      gap: 8px; min-width: 0;
     }
-    .player-speaker { max-width: 100%; font-size: 12px; }
+    .player-title { font-size: 9px; white-space: nowrap; flex-shrink: 0; }
+    .player-speaker {
+      font-size: 11px; max-width: none; flex: 1;
+      margin-top: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    /* Row 2: progress */
     .progress-wrap { flex: none; }
-    .player-controls {
-      justify-content: space-between;
-      gap: 4px;
-      flex-wrap: nowrap;
-    }
+    .progress-label { font-size: 9px; }
+    /* Rows 3+4: core controls and utils */
+    .player-controls { flex-direction: column; gap: 5px; align-items: stretch; }
+    .pc-core, .pc-utils { justify-content: center; gap: 6px; margin-left: 0; }
 
-    /* Touch-friendly buttons */
+    /* Button sizing */
     .btn-ctrl {
-      padding: 10px 10px;
-      font-size: 15px;
-      border-radius: 9px;
-      min-width: 40px;
-      min-height: 40px;
-      justify-content: center;
+      padding: 10px 10px; font-size: 15px;
+      border-radius: 9px; min-width: 42px; min-height: 42px; justify-content: center;
     }
-    .btn-play { padding: 10px 18px; font-size: 13px; }
-    #speedSelect { padding: 7px 4px; font-size: 11px; max-width: 60px; }
-
-    /* Labels hide on mobile */
     .btn-ctrl .btn-label { display: none; }
+    .btn-play { padding: 10px 20px; font-size: 13px; min-width: 80px; }
+    #speedSelect { padding: 8px 6px; font-size: 11px; max-width: 58px; min-height: 42px; }
+    .pc-utils .btn-ctrl { padding: 8px 8px; font-size: 16px; min-width: 40px; min-height: 40px; }
 
-    /* Hero */
-    .hero { padding: 36px 16px 24px; }
-    .hero h1 { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    .hero { padding: 32px 16px 20px; }
+    .hero h1 { font-size: clamp(1.4rem, 6vw, 2.1rem); }
+    .hero .subtitle { font-size: 0.87rem; }
+    .meta-row { gap: 10px; flex-wrap: wrap; font-size: 0.8rem; }
 
-    /* Container */
-    .container { padding: 24px 14px 60px; }
-
-    /* Turn layout */
+    /* ─────────────────────────────────────────
+       CONTENT
+    ───────────────────────────────────────── */
+    .container { padding: 20px 14px 40px; }
     .turn { gap: 10px; padding: 12px 0; }
-    .speaker-tag { width: 30px; height: 30px; font-size: 11px; }
+    .speaker-tag { width: 30px; height: 30px; font-size: 11px; flex-shrink: 0; }
+    .speech p { font-size: 0.92rem; }
+    .chapter-title { font-size: clamp(1.2rem, 5vw, 1.8rem) !important; }
+    .infobox { padding: 14px 16px; }
+    .schema { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .klausur-box { padding: 16px; }
+    .mini-cards { grid-template-columns: 1fr !important; }
 
-    /* Flashcard buttons */
-    .sr-btn { min-width: 68px; padding: 8px 10px; }
-    .sr-btn-label { font-size: 11px; }
+    /* ─────────────────────────────────────────
+       FLASHCARD SECTION
+    ───────────────────────────────────────── */
+    #flashcard-section { padding: 0 14px 40px; }
+    #fc-prev-btn, #fc-next-btn {
+      width: 36px; height: 36px; font-size: 18px; flex-shrink: 0; padding: 0;
+    }
+    .fc-face { padding: 20px 18px; min-height: 180px; }
+    body.touch-device .fc-face { min-height: 180px; }
+    .fc-term { font-size: 1.2rem; }
+    .fc-answer { font-size: 0.91rem; }
+    .fc-hint { font-size: 9px; margin-bottom: 10px; }
+    .fc-category { font-size: 9px; }
 
-    /* Theme toggle */
-    .theme-toggle { top: 8px; right: 8px; padding: 5px 10px; font-size: 11px; }
+    /* Flip button */
+    #fc-flip-btn-wrap { margin-bottom: 10px; }
+    #fc-flip-btn { font-size: 15px; padding: 18px 0; }
 
-    /* Chat: full-width bottom sheet */
+    /* SR rating 2-column grid */
+    #fc-sr-buttons { gap: 8px; padding: 0; }
+    .sr-btn {
+      flex: 1 1 calc(50% - 4px); max-width: calc(50% - 4px);
+      padding: 12px 6px; min-height: 56px;
+    }
+    .sr-btn-label { font-size: 12px; }
+    .sr-btn-interval { font-size: 10px; }
+
+    /* SR stats */
+    #fc-sr-stats > div { gap: 12px; flex-wrap: wrap; }
+    #fc-sr-stats > div > div { min-width: 56px; }
+
+    /* Mode buttons */
+    .fc-mode-btn { font-size: 11px; padding: 7px 12px; }
+
+    /* Filter row: horizontal scroll */
+    #fc-filters {
+      flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px; scrollbar-width: none; margin-bottom: 16px;
+    }
+    #fc-filters::-webkit-scrollbar { display: none; }
+    .fc-filter-btn { white-space: nowrap; flex-shrink: 0; font-size: 11px; }
+    #fc-free-controls { gap: 12px; }
+
+    /* ─────────────────────────────────────────
+       QUIZ
+    ───────────────────────────────────────── */
+    .quiz-block { padding: 14px; }
+    .quiz-title { font-size: 0.95rem; }
+    #mega-quiz-section { padding: 0 14px 60px; }
+
+    /* ─────────────────────────────────────────
+       SETUP MODAL
+    ───────────────────────────────────────── */
+    .setup-card { padding: 18px 14px; }
+    .setup-card h2 { font-size: 1.2rem; }
+    .key-input-wrap { flex-wrap: wrap; }
+    .btn-confirm { width: 100%; }
+
+    /* ─────────────────────────────────────────
+       OVERLAYS
+    ───────────────────────────────────────── */
     #chatWidget {
       bottom: 0 !important; right: 0 !important; left: 0 !important;
-      width: 100% !important; border-radius: 16px 16px 0 0;
-      max-height: 75vh;
+      width: 100% !important; border-radius: 16px 16px 0 0; max-height: 75vh;
     }
-
-    /* Transcript panel full width */
     #transcriptPanel { width: 100% !important; }
-
-    /* Overlays: reduce padding */
-    #dashboardOverlay,
-    #topicManagerOverlay { padding: 16px 14px 140px; }
-
-    /* SR stats: wrap */
-    #fc-sr-stats > div { gap: 12px; }
-
-    /* Quiz blocks */
-    .quiz-block { padding: 16px; }
-    .setup-card { padding: 20px 16px; }
-    .setup-card h2 { font-size: 1.3rem; }
-
-    /* Dashboard grid */
+    #dashboardOverlay { padding: 16px 12px 210px; }
+    #topicManagerOverlay { padding: 16px 14px 210px; }
     #dash-stats-row { grid-template-columns: repeat(3, 1fr) !important; }
+    .topic-card { flex-direction: column; align-items: flex-start; }
+
+    /* ── Misc ── */
+    .theme-toggle { top: 8px; right: 8px; padding: 5px 10px; font-size: 11px; }
   }
 
   @media (max-width: 420px) {
+    body { padding-bottom: 210px; }
     #speedSelect { display: none; }
-    .btn-ctrl { padding: 10px 8px; min-width: 38px; }
+    .btn-ctrl { min-width: 38px; }
+    .btn-play { min-width: 70px; padding: 10px 12px; }
     #dash-stats-row { grid-template-columns: repeat(2, 1fr) !important; }
-    .hero h1 { font-size: 1.5rem; }
+    .hero h1 { font-size: 1.4rem; }
+    .fc-term { font-size: 1.1rem; }
+    #fc-prev-btn, #fc-next-btn { width: 30px; height: 30px; font-size: 15px; }
+    #fc-flip-btn { font-size: 13px; padding: 15px 0; }
   }
 </style>
 </head>
@@ -1845,18 +1913,18 @@
   <!-- Card viewport -->
   <div style="display:flex;align-items:center;gap:16px;justify-content:center;margin-bottom:16px;">
     <button id="fc-prev-btn" onclick="fcNav(-1)" style="background:var(--card);border:1px solid var(--border);color:var(--text);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;flex-shrink:0;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">‹</button>
-    <div id="fc-card-wrap" style="flex:1;max-width:560px;perspective:1000px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
-      <div id="fc-card" style="width:100%;min-height:220px;position:relative;transform-style:preserve-3d;transition:transform 0.5s cubic-bezier(.4,0,.2,1);">
+    <button id="fc-card-wrap" onclick="fcFlip()" aria-label="Karte umdrehen" style="flex:1;max-width:560px;background:none;border:none;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;outline:none;text-align:left;">
+      <div id="fc-card" style="width:100%;min-height:220px;position:relative;">
         <div class="fc-face fc-front" id="fc-front"></div>
         <div class="fc-face fc-back" id="fc-back"></div>
       </div>
-    </div>
+    </button>
     <button id="fc-next-btn" onclick="fcNav(1)" style="background:var(--card);border:1px solid var(--border);color:var(--text);width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;flex-shrink:0;transition:all 0.15s;" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'">›</button>
   </div>
 
-  <!-- SR mode: explicit flip button (mobile-friendly) -->
+  <!-- Flip button: shown on touch devices for BOTH modes -->
   <div id="fc-flip-btn-wrap" style="display:none;justify-content:center;margin-bottom:12px;">
-    <button onclick="fcFlip()" style="background:var(--card);border:2px solid var(--accent2);color:var(--accent2);font-family:'DM Mono',monospace;font-size:13px;font-weight:600;padding:12px 32px;border-radius:12px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:all 0.15s;width:100%;max-width:320px;" ontouchstart="this.style.background='rgba(181,113,26,0.15)'" ontouchend="this.style.background='var(--card)'">🔄 Umdrehen</button>
+    <button id="fc-flip-btn" onclick="fcFlip()" style="background:var(--card);border:2px solid var(--accent2);color:var(--accent2);font-family:'DM Mono',monospace;font-size:14px;font-weight:600;padding:16px 0;border-radius:14px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;width:100%;letter-spacing:0.04em;">🔄 Antwort zeigen</button>
   </div>
 
   <!-- SR rating buttons (shown after flip in SR mode) -->
@@ -2171,6 +2239,16 @@ body.light .chapter-lock-overlay { background: rgba(245,240,232,0.85); }
    the overlay itself catches clicks visually, that is enough */
 
 /* ── FLASHCARDS ─────────────────────────────── */
+
+/* Desktop: 3D flip */
+#fc-card-wrap { perspective: 1000px; display: block; width: 100%; }
+#fc-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  min-height: 220px;
+}
+#fc-card.flipped { transform: rotateY(180deg); }
 .fc-face {
   position: absolute; inset: 0;
   backface-visibility: hidden;
@@ -2181,7 +2259,7 @@ body.light .chapter-lock-overlay { background: rgba(245,240,232,0.85); }
   padding: 28px 32px;
   text-align: center;
   min-height: 220px;
-  pointer-events: none; /* let touches pass through to the wrapper */
+  pointer-events: none;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -2195,6 +2273,33 @@ body.light .chapter-lock-overlay { background: rgba(245,240,232,0.85); }
   border: 1px solid rgba(232,162,58,0.3);
   transform: rotateY(180deg);
 }
+
+/* ── MOBILE / TOUCH: pure display-swap, zero CSS tricks ──────
+   Safari iOS can't reliably do 3D CSS transforms on div buttons.
+   Solution: faces are in normal flow, only one visible at a time.
+   JS toggles display:flex / display:none.                      */
+body.touch-device #fc-card-wrap { perspective: none; }
+body.touch-device #fc-card {
+  transform: none !important;
+  transform-style: flat;
+  transition: none;
+  min-height: 0;           /* height driven by visible face */
+  position: static;        /* no longer a positioning context */
+  display: block;
+}
+body.touch-device #fc-card.flipped { transform: none !important; }
+body.touch-device .fc-face {
+  position: relative !important; /* back in normal document flow */
+  inset: auto;
+  transform: none !important;
+  backface-visibility: visible;
+  -webkit-backface-visibility: visible;
+  width: 100%;
+  min-height: 180px;
+}
+/* Only front visible by default; JS overrides with inline display */
+body.touch-device .fc-back  { display: none; }
+body.touch-device .fc-front { display: flex; }
 /* ── TRANSCRIPT ──────────────────────────────── */
 .tr-item {
   padding: 10px 20px; cursor: pointer;
@@ -2451,24 +2556,43 @@ body.light .chapter-lock-overlay { background: rgba(245,240,232,0.85); }
     <div class="progress-label" id="progressLabel">0 / 0 Abschnitte</div>
   </div>
   <div class="player-controls">
-    <button class="btn-ctrl" onclick="prevTurn()" title="Zurück">⏮</button>
-    <button class="btn-ctrl btn-play" id="btnPlay" onclick="togglePlay()">▶ Play</button>
-    <button class="btn-ctrl" onclick="nextTurn()" title="Weiter">⏭</button>
-    <select id="speedSelect" onchange="setSpeed(this.value)" title="Wiedergabegeschwindigkeit" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:6px 8px;border-radius:8px;cursor:pointer;outline:none;">
-      <option value="0.75">0.75×</option>
-      <option value="1" selected>1×</option>
-      <option value="1.25">1.25×</option>
-      <option value="1.5">1.5×</option>
-      <option value="2">2×</option>
-    </select>
-    <button class="btn-ctrl" onclick="openSearch()" title="Suchen (Ctrl+K)" style="font-size:16px;padding:9px 10px;">🔍</button>
-    <button class="btn-ctrl" onclick="toggleChat()" title="KI-Chat" style="font-size:16px;padding:9px 10px;">💬</button>
-    <button class="btn-ctrl" id="btnKey" onclick="showSetup()" title="API Keys" style="font-size:16px;padding:9px 10px;">🔑</button>
-    <button class="btn-ctrl" onclick="jumpToCurrent()" title="Aktuelle Stelle" style="font-size:16px;padding:9px 10px;">🎯</button>
+    <div class="pc-core">
+      <button class="btn-ctrl" onclick="prevTurn()" title="Zurück">⏮</button>
+      <button class="btn-ctrl btn-play" id="btnPlay" onclick="togglePlay()">▶ Play</button>
+      <button class="btn-ctrl" onclick="nextTurn()" title="Weiter">⏭</button>
+      <select id="speedSelect" onchange="setSpeed(this.value)" title="Geschwindigkeit" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:6px 8px;border-radius:8px;cursor:pointer;outline:none;">
+        <option value="0.75">0.75×</option>
+        <option value="1" selected>1×</option>
+        <option value="1.25">1.25×</option>
+        <option value="1.5">1.5×</option>
+        <option value="2">2×</option>
+      </select>
+    </div>
+    <div class="pc-utils">
+      <button class="btn-ctrl" onclick="openSearch()" title="Suchen (Ctrl+K)">🔍</button>
+      <button class="btn-ctrl" onclick="toggleChat()" title="KI-Chat">💬</button>
+      <button class="btn-ctrl" id="btnKey" onclick="showSetup()" title="API Keys">🔑</button>
+      <button class="btn-ctrl" onclick="jumpToCurrent()" title="Aktuelle Stelle">🎯</button>
+    </div>
   </div>
 </div>
 
 <script>
+// ── TOUCH DEVICE DETECTION ───────────────────────────────
+// Sets body.touch-device which enables the Safari-compatible
+// opacity-based card flip instead of the broken 3D transform.
+(function() {
+  const isTouch = ('ontouchstart' in window) ||
+    (navigator.maxTouchPoints > 0) ||
+    (navigator.msMaxTouchPoints > 0);
+  if (isTouch) document.body.classList.add('touch-device');
+  // Also add it on first touch (catches devices that fake desktop UA)
+  window.addEventListener('touchstart', function setTouch() {
+    document.body.classList.add('touch-device');
+    window.removeEventListener('touchstart', setTouch);
+  }, { once: true, passive: true });
+})();
+
 // ── VOICES ──────────────────────────────────────────────
 const VOICE_ALEX = 'onwK4e9ZLuTAKqWW03F9'; // Daniel – deep male
 const VOICE_LENA = 'XB0fDUnXU5powFXDhCwa'; // Charlotte – warm female
@@ -2516,18 +2640,30 @@ async function dbSet(key, val) {
   });
 }
 
-// Session-level blob URL cache (avoids recreating URLs)
+// Session-level URL cache (data URLs on Safari, blob URLs elsewhere)
 const urlCache = {};
+const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 async function getAudioURL(idx) {
   if (urlCache[idx]) return urlCache[idx];
   const blob = await dbGet(`turn_${idx}`);
-  if (blob) {
-    const url = URL.createObjectURL(blob);
-    urlCache[idx] = url;
-    return url;
+  if (!blob || !(blob instanceof Blob) || blob.size === 0) return null;
+
+  let url;
+  if (_isSafari) {
+    // Safari: blob URLs from IndexedDB are unreliable (ITP/security restrictions)
+    // Use data URL via FileReader — works in all Safari versions and security modes
+    url = await new Promise((res, rej) => {
+      const reader = new FileReader();
+      reader.onload  = () => res(reader.result);
+      reader.onerror = () => rej(reader.error);
+      reader.readAsDataURL(blob);
+    });
+  } else {
+    url = URL.createObjectURL(blob);
   }
-  return null; // not cached
+  urlCache[idx] = url;
+  return url;
 }
 
 async function updateCacheStatus() {
@@ -2639,23 +2775,20 @@ async function confirmKey() {
     }
     return;
   }
-  const btn = document.getElementById('elBtnConfirm');
-  btn.textContent = 'Prüfe…';
-  btn.disabled = true;
-  try {
-    const res = await fetch('https://api.elevenlabs.io/v1/voices', { headers: { 'xi-api-key': inp } });
-    if (!res.ok) throw new Error('invalid');
-    apiKey = inp;
-    localStorage.setItem(LS_KEY, inp);
-    document.getElementById('setupOverlay').style.display = 'none';
-    document.getElementById('playerSpeaker').textContent = '✅ Key gespeichert – drücke Play!';
-    updateCacheStatus();
-    updateSavedKeyUI();
-  } catch(e) {
+  // Basic format check (ElevenLabs keys start with 'sk_')
+  if (inp.length < 10) {
     document.getElementById('errorMsg').style.display = 'block';
+    return;
   }
-  btn.textContent = 'Speichern →';
-  btn.disabled = false;
+  // Save directly — we validate on first TTS use instead of hitting
+  // the /voices endpoint, which has unreliable CORS on some browsers (Safari).
+  apiKey = inp;
+  localStorage.setItem(LS_KEY, inp);
+  document.getElementById('setupOverlay').style.display = 'none';
+  document.getElementById('playerSpeaker').textContent = '✅ Key gespeichert – drücke Play!';
+  document.getElementById('errorMsg').style.display = 'none';
+  updateCacheStatus();
+  updateSavedKeyUI();
 }
 
 function copyKey() {
@@ -2793,10 +2926,21 @@ async function speakTurn(idx) {
     document.getElementById('btnPlay').textContent = '⏸ Pause';
     updateUI(idx);
 
-    const audio = new Audio(url);
+    const audio = new Audio();
+    audio.preload = 'auto';
+    audio.src = url;
     currentAudio = audio;
     audio.playbackRate = playbackRate;
-    audio.play();
+    // load() is required on Safari before play() with a blob URL
+    audio.load();
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(err => {
+        // Safari may block autoplay — fallback to browser TTS
+        console.warn('audio.play() blocked:', err);
+        if (isPlaying) fallbackSpeak(idx);
+      });
+    }
 
     // Pre-fetch next silently
     if (idx + 1 < turns.length) fetchAudio(idx + 1).catch(() => {});
@@ -3966,19 +4110,27 @@ function srRate(rating) {
 
 // ── Render one SR card ────────────────────────────────────
 function srRenderCurrentCard() {
-  // Hide rating buttons, reset flip state
   document.getElementById('fc-sr-buttons').style.display = 'none';
   document.getElementById('fc-flip-btn-wrap').style.display = 'none';
   fcFlipped = false;
-  document.getElementById('fc-card').classList.remove('flipped');
+  const cardEl = document.getElementById('fc-card');
+  const front  = document.getElementById('fc-front');
+  const back   = document.getElementById('fc-back');
+  const isTouch = document.body.classList.contains('touch-device');
 
-  const wrap = document.getElementById('fc-card-wrap');
-  const front = document.getElementById('fc-front');
-  const back  = document.getElementById('fc-back');
+  cardEl.classList.remove('flipped');
+  if (isTouch) {
+    front.style.display = 'flex';
+    back.style.display  = 'none';
+    front.style.opacity = '';
+    back.style.opacity  = '';
+  } else {
+    front.style.display = '';
+    back.style.display  = '';
+  }
 
   // ── Done screen ──
   if (srInitialLen === 0 || srQueueIdx >= srQueue.length) {
-    wrap.style.cursor = 'default';
     front.innerHTML = `
       <div class="sr-done">
         <div style="font-size:2.5rem;margin-bottom:12px;">🎉</div>
@@ -3997,27 +4149,29 @@ function srRenderCurrentCard() {
     return;
   }
 
-  // ── Card ──
-  wrap.style.cursor = 'pointer';
-  // Show flip button (primary way to flip on mobile)
-  document.getElementById('fc-flip-btn-wrap').style.display = 'flex';
+  // Show flip button for this card (touch: always; desktop: never needed here)
+  if (isTouch) {
+    document.getElementById('fc-flip-btn-wrap').style.display = 'flex';
+    const btn = document.getElementById('fc-flip-btn');
+    if (btn) btn.textContent = '🔄 Karte umdrehen';
+  }
 
-  const card  = srQueue[srQueueIdx];
-  const data  = srLoad();
-  const state = data[card.term] || srDefaultState();
-  const isNew = state.reps === 0;
+  const srCard = srQueue[srQueueIdx];
+  const data   = srLoad();
+  const state  = data[srCard.term] || srDefaultState();
+  const isNew  = state.reps === 0;
 
   const intervals = srPreviewIntervals(state);
 
   front.innerHTML = `
     <div class="fc-hint">${isNew ? '🆕 Neue Karte' : '🔁 Wiederholung'}</div>
-    <div class="fc-term">${card.term}</div>
-    <div class="fc-category">${card.cat}</div>`;
+    <div class="fc-term">${srCard.term}</div>
+    <div class="fc-category">${srCard.cat}</div>`;
 
   back.innerHTML = `
     <div class="fc-hint">Erklärung &nbsp;·&nbsp; Jetzt bewerten ↓</div>
-    <div class="fc-answer">${card.answer}</div>
-    ${card.example ? `<div class="fc-example">💡 ${card.example}</div>` : ''}`;
+    <div class="fc-answer">${srCard.answer}</div>
+    ${srCard.example ? `<div class="fc-example">💡 ${srCard.example}</div>` : ''}`;
 
   document.getElementById('sr-int-1').textContent = intervals[0];
   document.getElementById('sr-int-2').textContent = intervals[1];
@@ -4036,11 +4190,37 @@ function srRenderCurrentCard() {
 // ── Flip (shared between free + SR) ──────────────────────
 function fcFlip() {
   fcFlipped = !fcFlipped;
-  document.getElementById('fc-card').classList.toggle('flipped', fcFlipped);
+  const front  = document.getElementById('fc-front');
+  const back   = document.getElementById('fc-back');
+  const cardEl = document.getElementById('fc-card');
+  const flipBtn = document.getElementById('fc-flip-btn');
+
+  if (document.body.classList.contains('touch-device')) {
+    // ── MOBILE: pure display toggle — 100% reliable on Safari iOS ──
+    // No CSS transforms, no opacity tricks — just show/hide faces
+    front.style.display = fcFlipped ? 'none' : 'flex';
+    back.style.display  = fcFlipped ? 'flex' : 'none';
+  } else {
+    // ── DESKTOP: CSS 3D flip ──
+    cardEl.classList.toggle('flipped', fcFlipped);
+  }
+
+  // Update flip button: visible until flipped (both modes on touch)
+  const flipWrap = document.getElementById('fc-flip-btn-wrap');
+  if (document.body.classList.contains('touch-device') && flipWrap) {
+    if (fcMode === 'sr') {
+      // SR mode: hide flip btn after flip (replaced by rating buttons)
+      flipWrap.style.display = fcFlipped ? 'none' : 'flex';
+    } else {
+      // Free mode: keep btn but change label to allow flipping back
+      flipWrap.style.display = 'flex';
+      if (flipBtn) flipBtn.textContent = fcFlipped ? '↩ Begriff zeigen' : '🔄 Antwort zeigen';
+    }
+  }
+
+  // SR mode: show rating buttons after flip
   if (fcMode === 'sr') {
-    // Show rating buttons only AFTER flip; hide flip button after flip
     document.getElementById('fc-sr-buttons').style.display = fcFlipped ? 'flex' : 'none';
-    document.getElementById('fc-flip-btn-wrap').style.display = fcFlipped ? 'none' : 'flex';
   }
 }
 
@@ -4048,6 +4228,7 @@ function fcFlip() {
 function fcSetMode(mode) {
   fcMode = mode;
   const isSR = mode === 'sr';
+  const isTouch = document.body.classList.contains('touch-device');
   document.getElementById('fc-mode-free').classList.toggle('fc-mode-active', !isSR);
   document.getElementById('fc-mode-sr').classList.toggle('fc-mode-active', isSR);
   document.getElementById('fc-filters').style.display        = isSR ? 'none'  : 'flex';
@@ -4056,33 +4237,28 @@ function fcSetMode(mode) {
   document.getElementById('fc-next-btn').style.display       = isSR ? 'none'  : '';
   document.getElementById('fc-sr-stats').style.display       = isSR ? 'block' : 'none';
   document.getElementById('fc-sr-counter').style.display     = isSR ? 'block' : 'none';
-  document.getElementById('fc-sr-buttons').style.display     = 'none'; // always hidden on mode change
-  document.getElementById('fc-flip-btn-wrap').style.display  = 'none'; // will be set by srRenderCurrentCard
+  document.getElementById('fc-sr-buttons').style.display     = 'none';
+  // Flip button: always visible in touch mode (hidden in SR until card renders)
+  document.getElementById('fc-flip-btn-wrap').style.display  =
+    (isTouch && !isSR) ? 'flex' : 'none';
 
   if (isSR) {
     srBuildQueue();
     srUpdateStats();
     srRenderCurrentCard();
   } else {
+    // Reset flip btn label for free mode
+    const btn = document.getElementById('fc-flip-btn');
+    if (btn) btn.textContent = '🔄 Antwort zeigen';
     fcRenderCard();
   }
 }
 
 // ── Free-mode functions ───────────────────────────────────
 function fcInit() {
-  // Bind card tap — works on both desktop and mobile
-  const wrap = document.getElementById('fc-card-wrap');
-  let _tapped = false;
-  wrap.addEventListener('touchend', function(e) {
-    e.preventDefault(); // prevent ghost click
-    _tapped = true;
-    fcFlip();
-    setTimeout(() => { _tapped = false; }, 300);
-  }, { passive: false });
-  wrap.addEventListener('click', function() {
-    if (_tapped) return; // already handled by touchend
-    fcFlip();
-  });
+  // #fc-card-wrap is a <button> with onclick="fcFlip()" in HTML.
+  // Safari iOS fires click reliably on <button> elements.
+  // Touch display-toggle is handled by fcFlip() + fcRenderCard().
 
   const filterEl = document.getElementById('fc-filters');
   const allBtn = document.createElement('button');
@@ -4097,6 +4273,7 @@ function fcInit() {
     btn.onclick = () => fcSetCategory(cat, btn);
     filterEl.appendChild(btn);
   });
+
   fcRenderCard();
 }
 
@@ -4110,13 +4287,33 @@ function fcSetCategory(cat, btn) {
 }
 
 function fcRenderCard() {
-  const card  = document.getElementById('fc-card');
-  const front = document.getElementById('fc-front');
-  const back  = document.getElementById('fc-back');
+  const cardEl = document.getElementById('fc-card');
+  const front  = document.getElementById('fc-front');
+  const back   = document.getElementById('fc-back');
+  const isTouch = document.body.classList.contains('touch-device');
   fcFlipped = false;
-  card.classList.remove('flipped');
+
+  // Reset card state
+  cardEl.classList.remove('flipped');
+  if (isTouch) {
+    // Display toggle mode: front visible, back hidden
+    front.style.display = 'flex';
+    back.style.display  = 'none';
+    // Reset inline opacity in case it was set previously
+    front.style.opacity = '';
+    back.style.opacity  = '';
+    // Show flip button in free mode, reset label
+    document.getElementById('fc-flip-btn-wrap').style.display = 'flex';
+    const btn = document.getElementById('fc-flip-btn');
+    if (btn) btn.textContent = '🔄 Antwort zeigen';
+  } else {
+    // Desktop: clear any inline display overrides
+    front.style.display = '';
+    back.style.display  = '';
+  }
+
   document.getElementById('fc-sr-buttons').style.display = 'none';
-  document.getElementById('fc-flip-btn-wrap').style.display = 'none';
+  if (!isTouch) document.getElementById('fc-flip-btn-wrap').style.display = 'none';
 
   if (fcDeck.length === 0) {
     front.innerHTML = '<div class="fc-hint">Keine Karten in dieser Kategorie</div>';
