@@ -543,6 +543,16 @@
     gap: 6px;
   }
   .btn-ctrl:hover { border-color: var(--accent); color: var(--accent); }
+  /* Active/on state for toggle buttons (auto-scroll, sleep) */
+  .btn-ctrl.btn-active {
+    background: rgba(232,162,58,0.15);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .btn-ctrl.btn-danger {
+    border-color: #e06c6c;
+    color: #e06c6c;
+  }
   .btn-play {
     background: var(--accent);
     border-color: var(--accent);
@@ -813,6 +823,37 @@
     #fc-prev-btn, #fc-next-btn { width: 30px; height: 30px; font-size: 15px; }
     #fc-flip-btn { font-size: 13px; padding: 15px 0; }
   }
+
+  /* ── SLEEP TIMER ────────────────────────── */
+  .sleep-opt-btn {
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--text); font-family: 'DM Mono', monospace;
+    font-size: 12px; padding: 10px 6px; border-radius: 9px;
+    cursor: pointer; transition: all 0.15s; text-align: center;
+  }
+  .sleep-opt-btn:hover, .sleep-opt-btn.selected {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(232,162,58,0.1);
+  }
+  /* ── SHORTCUTS OVERLAY ──────────────────── */
+  .sc-group-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--accent2); margin-top: 6px; margin-bottom: 4px;
+  }
+  .sc-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 6px 10px; border-radius: 7px; transition: background 0.1s;
+  }
+  .sc-row:hover { background: rgba(232,162,58,0.05); }
+  .sc-row kbd {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    background: var(--card); border: 1px solid var(--border);
+    border-bottom: 2px solid var(--border); border-radius: 5px;
+    padding: 3px 8px; color: var(--highlight); min-width: 60px;
+    text-align: center; flex-shrink: 0; white-space: nowrap;
+  }
+  .sc-row span { font-size: 0.87rem; color: var(--muted); }
 </style>
 </head>
 <body>
@@ -2580,6 +2621,58 @@ body.touch-device .fc-front { display: flex; }
   </div>
 </div>
 
+<!-- SLEEP TIMER OVERLAY -->
+<div id="sleepOverlay" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(10,9,7,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="closeSleepOutside(event)">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px 28px 24px;max-width:340px;width:calc(100% - 32px);box-shadow:0 16px 56px rgba(0,0,0,0.6);" onclick="event.stopPropagation()">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:14px;">⏱ Sleep-Timer</div>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:18px;line-height:1.6;">Podcast stoppt automatisch nach der gewählten Zeit.</p>
+    <div id="sleepCountdown" style="display:none;text-align:center;margin-bottom:18px;">
+      <div id="sleepTimeLeft" style="font-family:'Fraunces',serif;font-size:2.8rem;font-weight:700;color:var(--accent);line-height:1;"></div>
+      <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em;">verbleibend</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
+      <button class="sleep-opt-btn" onclick="setSleepTimer(5)">5 min</button>
+      <button class="sleep-opt-btn" onclick="setSleepTimer(10)">10 min</button>
+      <button class="sleep-opt-btn" onclick="setSleepTimer(15)">15 min</button>
+      <button class="sleep-opt-btn" onclick="setSleepTimer(20)">20 min</button>
+      <button class="sleep-opt-btn" onclick="setSleepTimer(30)">30 min</button>
+      <button class="sleep-opt-btn" onclick="setSleepTimer(45)">45 min</button>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button id="sleepCancelBtn" onclick="cancelSleepTimer()" style="display:none;flex:1;background:rgba(224,108,108,0.12);border:1px solid rgba(224,108,108,0.4);color:#e06c6c;font-family:'DM Mono',monospace;font-size:12px;padding:10px;border-radius:9px;cursor:pointer;">✕ Abbrechen</button>
+      <button onclick="closeSleepOverlay()" style="flex:1;background:none;border:1px solid var(--border);color:var(--muted);font-family:'DM Mono',monospace;font-size:12px;padding:10px;border-radius:9px;cursor:pointer;">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHORTCUTS OVERLAY -->
+<div id="shortcutsOverlay" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(10,9,7,0.85);backdrop-filter:blur(6px);align-items:center;justify-content:center;" onclick="closeShortcutsOutside(event)">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;max-width:420px;width:calc(100% - 32px);box-shadow:0 16px 56px rgba(0,0,0,0.6);max-height:80vh;overflow-y:auto;" onclick="event.stopPropagation()">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);">⌨️ Tastaturkürzel</div>
+      <button onclick="closeShortcuts()" style="background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;line-height:1;">✕</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;">
+      <div class="sc-group-label">🎧 Player</div>
+      <div class="sc-row"><kbd>Leertaste</kbd><span>Play / Pause</span></div>
+      <div class="sc-row"><kbd>←</kbd><span>Vorherige Stelle</span></div>
+      <div class="sc-row"><kbd>→</kbd><span>Nächste Stelle</span></div>
+      <div class="sc-row"><kbd>↑</kbd><span>Lauter (+10%)</span></div>
+      <div class="sc-row"><kbd>↓</kbd><span>Leiser (−10%)</span></div>
+      <div class="sc-row"><kbd>M</kbd><span>Stummschalten</span></div>
+      <div class="sc-row"><kbd>Ctrl+K</kbd><span>Suche öffnen</span></div>
+      <div class="sc-group-label" style="margin-top:12px;">🃏 Lernkarten (wenn sichtbar)</div>
+      <div class="sc-row"><kbd>←</kbd><span>Vorherige Karte (Freies Lernen)</span></div>
+      <div class="sc-row"><kbd>→</kbd><span>Nächste Karte (Freies Lernen)</span></div>
+      <div class="sc-row"><kbd>Leertaste</kbd><span>Karte umdrehen</span></div>
+      <div class="sc-row"><kbd>1</kbd><span>Nochmal (SR-Modus)</span></div>
+      <div class="sc-row"><kbd>2</kbd><span>Schwer (SR-Modus)</span></div>
+      <div class="sc-row"><kbd>3</kbd><span>Gut (SR-Modus)</span></div>
+      <div class="sc-row"><kbd>4</kbd><span>Leicht (SR-Modus)</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- PLAYER BAR -->
 <div class="player-bar" id="playerBar">
   <div class="player-info">
@@ -3085,7 +3178,8 @@ function updateUI(idx) {
   document.getElementById('progressLabel').textContent = (idx+1) + ' / ' + turns.length + ' Abschnitte';
   document.querySelectorAll('.turn.speaking').forEach(t => t.classList.remove('speaking'));
   t.el.classList.add('speaking');
-  t.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (autoScrollEnabled) t.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if (typeof highlightTranscriptItem === 'function') highlightTranscriptItem(idx);
 }
 
 async function speakTurn(idx) {
@@ -3297,7 +3391,8 @@ document.querySelectorAll('.turn').forEach((turn, idx) => {
   });
 });
 
-// ── JUMP TO CURRENT ──────────────────────────────────────
+// ── AUTO-SCROLL STATE (declared early, used in updateUI) ──
+let autoScrollEnabled = true;
 function jumpToCurrent() {
   const active = document.querySelector('.turn.speaking');
   if (active) {
@@ -4206,11 +4301,7 @@ function searchKeyNav(e) {
   }
 }
 
-// Open search with Ctrl+F / Cmd+F override? Just Ctrl+K
-document.addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
-  if (e.key === 'Escape' && document.getElementById('searchOverlay').style.display !== 'none') closeSearch();
-});
+// Ctrl+K and Escape handled by global keyboard shortcut handler below
 
 // ── FLASHCARDS DATA ──────────────────────────────────────
 const FC_CARDS = [
@@ -4755,27 +4846,7 @@ function fcReset() {
   fcIdx = 0; fcRenderCard();
 }
 
-// ── Keyboard shortcuts ────────────────────────────────────
-document.addEventListener('keydown', e => {
-  if (document.getElementById('searchOverlay').style.display !== 'none') return;
-  if (document.getElementById('setupOverlay').style.display !== 'none') return;
-  const rect = document.getElementById('flashcard-section').getBoundingClientRect();
-  if (rect.top > window.innerHeight || rect.bottom < 0) return;
-
-  if (fcMode === 'free') {
-    if (e.key === 'ArrowLeft')  { e.preventDefault(); fcNav(-1); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); fcNav(1); }
-  } else {
-    // SR mode: only allow rating after flipping
-    if (fcFlipped) {
-      if (e.key === '1') { e.preventDefault(); srRate(1); }
-      if (e.key === '2') { e.preventDefault(); srRate(2); }
-      if (e.key === '3') { e.preventDefault(); srRate(3); }
-      if (e.key === '4') { e.preventDefault(); srRate(4); }
-    }
-  }
-  if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); fcFlip(); }
-});
+// ── Keyboard shortcuts handled by global handler below ───
 
 // ══════════════════════════════════════════════════════════
 // 📝 TRANSCRIPT PANEL
@@ -5158,6 +5229,229 @@ function switchTopic(id) {
   renderTopicList();
   document.getElementById('playerSpeaker').textContent = '🔀 Podcast gewechselt';
 }
+
+// ── SLEEP TIMER ──────────────────────────────────────────
+let _sleepTimerId   = null;
+let _sleepEndTime   = null;
+let _sleepTickId    = null;
+let _sleepMinutes   = 0;
+
+function openSleepTimer() {
+  document.getElementById('sleepOverlay').style.display = 'flex';
+  _renderSleepState();
+}
+function closeSleepOverlay() {
+  document.getElementById('sleepOverlay').style.display = 'none';
+}
+function closeSleepOutside(e) {
+  if (e.target === document.getElementById('sleepOverlay')) closeSleepOverlay();
+}
+
+function setSleepTimer(minutes) {
+  // Clear any running timer
+  if (_sleepTimerId)  { clearTimeout(_sleepTimerId);  _sleepTimerId  = null; }
+  if (_sleepTickId)   { clearInterval(_sleepTickId);  _sleepTickId   = null; }
+
+  _sleepMinutes = minutes;
+  _sleepEndTime = Date.now() + minutes * 60 * 1000;
+
+  // Highlight selected button
+  document.querySelectorAll('.sleep-opt-btn').forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+
+  // Stop playback when timer fires
+  _sleepTimerId = setTimeout(() => {
+    pause();
+    _sleepEndTime = null;
+    _sleepMinutes = 0;
+    if (_sleepTickId) { clearInterval(_sleepTickId); _sleepTickId = null; }
+    document.getElementById('sleepBtn').classList.remove('btn-active', 'btn-danger');
+    document.getElementById('sleepBtn').title = 'Sleep-Timer';
+    document.getElementById('playerSpeaker').textContent = '⏱ Sleep-Timer abgelaufen – Pause.';
+    _renderSleepState();
+  }, minutes * 60 * 1000);
+
+  // Tick every second to update countdown
+  _sleepTickId = setInterval(_updateSleepTick, 1000);
+
+  // Mark button active
+  document.getElementById('sleepBtn').classList.add('btn-active');
+  document.getElementById('sleepBtn').title = `⏱ ${minutes} min`;
+
+  _renderSleepState();
+  _updateSleepTick();
+}
+
+function cancelSleepTimer() {
+  if (_sleepTimerId)  { clearTimeout(_sleepTimerId);  _sleepTimerId  = null; }
+  if (_sleepTickId)   { clearInterval(_sleepTickId);  _sleepTickId   = null; }
+  _sleepEndTime = null;
+  _sleepMinutes = 0;
+  document.getElementById('sleepBtn').classList.remove('btn-active', 'btn-danger');
+  document.getElementById('sleepBtn').title = 'Sleep-Timer';
+  document.querySelectorAll('.sleep-opt-btn').forEach(b => b.classList.remove('selected'));
+  _renderSleepState();
+}
+
+function _updateSleepTick() {
+  if (!_sleepEndTime) return;
+  const ms   = Math.max(0, _sleepEndTime - Date.now());
+  const secs = Math.ceil(ms / 1000);
+  const m    = Math.floor(secs / 60);
+  const s    = secs % 60;
+  const str  = `${m}:${String(s).padStart(2, '0')}`;
+
+  const el = document.getElementById('sleepTimeLeft');
+  if (el) el.textContent = str;
+
+  // Turn red in last 60 seconds
+  const btn = document.getElementById('sleepBtn');
+  if (secs <= 60) {
+    btn.classList.add('btn-danger');
+    btn.classList.remove('btn-active');
+  }
+  btn.title = `⏱ ${str}`;
+}
+
+function _renderSleepState() {
+  const active = !!_sleepEndTime;
+  const cd = document.getElementById('sleepCountdown');
+  const cancelBtn = document.getElementById('sleepCancelBtn');
+  if (cd) cd.style.display = active ? 'block' : 'none';
+  if (cancelBtn) cancelBtn.style.display = active ? 'block' : 'none';
+  if (!active) {
+    const el = document.getElementById('sleepTimeLeft');
+    if (el) el.textContent = '';
+  }
+}
+
+// ── AUTO-SCROLL ──────────────────────────────────────────
+// autoScrollEnabled declared above near updateUI
+
+(function initAutoScroll() {
+  // Restore saved preference
+  try {
+    const saved = localStorage.getItem('hurrelmann_autoscroll');
+    if (saved !== null) autoScrollEnabled = saved === '1';
+  } catch(e) {}
+  _updateAutoScrollBtn();
+})();
+
+function toggleAutoScroll() {
+  autoScrollEnabled = !autoScrollEnabled;
+  _updateAutoScrollBtn();
+  document.getElementById('playerSpeaker').textContent =
+    autoScrollEnabled ? '📌 Auto-Scroll: An' : '📌 Auto-Scroll: Aus';
+  try { localStorage.setItem('hurrelmann_autoscroll', autoScrollEnabled ? '1' : '0'); } catch(e) {}
+}
+
+function _updateAutoScrollBtn() {
+  const btn = document.getElementById('autoScrollBtn');
+  if (!btn) return;
+  if (autoScrollEnabled) {
+    btn.classList.add('btn-active');
+    btn.title = 'Auto-Scroll: An (klicken zum Deaktivieren)';
+  } else {
+    btn.classList.remove('btn-active');
+    btn.title = 'Auto-Scroll: Aus (klicken zum Aktivieren)';
+  }
+}
+
+// Patch updateUI: auto-scroll is now built into the main updateUI above.
+// autoScrollEnabled is declared below and read at call time.
+
+// ── SHORTCUTS OVERLAY ────────────────────────────────────
+function openShortcuts() {
+  document.getElementById('shortcutsOverlay').style.display = 'flex';
+}
+function closeShortcuts() {
+  document.getElementById('shortcutsOverlay').style.display = 'none';
+}
+function closeShortcutsOutside(e) {
+  if (e.target === document.getElementById('shortcutsOverlay')) closeShortcuts();
+}
+
+// ── GLOBAL KEYBOARD SHORTCUTS ────────────────────────────
+// Separate from the flashcard keydown handler (which only fires when cards visible).
+// These fire globally, guarded to not clash with input fields.
+document.addEventListener('keydown', e => {
+  // Ignore if user is typing in an input / textarea
+  const tag = document.activeElement?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+  // Ignore if any text-entry overlay is open (search, setup)
+  if (document.getElementById('searchOverlay').style.display !== 'none') return;
+  if (document.getElementById('setupOverlay').style.display !== 'none') return;
+  if (document.getElementById('shortcutsOverlay').style.display !== 'none') {
+    if (e.key === 'Escape') { closeShortcuts(); }
+    return;
+  }
+  if (document.getElementById('sleepOverlay').style.display !== 'none') {
+    if (e.key === 'Escape') { closeSleepOverlay(); }
+    return;
+  }
+
+  // Check if flashcard section is in viewport — delegate to flashcard handler only
+  const fcRect = document.getElementById('flashcard-section').getBoundingClientRect();
+  const fcVisible = fcRect.top < window.innerHeight && fcRect.bottom > 0;
+
+  switch(e.key) {
+    case ' ':
+      // Space = flip card if flashcards visible, else play/pause
+      if (fcVisible) {
+        e.preventDefault();
+        fcFlip();
+      } else {
+        e.preventDefault();
+        togglePlay();
+      }
+      break;
+    case 'ArrowLeft':
+      if (fcVisible && fcMode === 'free') { e.preventDefault(); fcNav(-1); }
+      else if (!fcVisible) { e.preventDefault(); prevTurn(); }
+      break;
+    case 'ArrowRight':
+      if (fcVisible && fcMode === 'free') { e.preventDefault(); fcNav(1); }
+      else if (!fcVisible) { e.preventDefault(); nextTurn(); }
+      break;
+    case 'ArrowUp':
+      if (!fcVisible) {
+        e.preventDefault();
+        currentVolume = Math.min(1, currentVolume + 0.1);
+        const sl = document.getElementById('volumeSlider');
+        if (sl) sl.value = currentVolume;
+        isMuted = false;
+        _applyVolume(); _updateVolIcon();
+      }
+      break;
+    case 'ArrowDown':
+      if (!fcVisible) {
+        e.preventDefault();
+        currentVolume = Math.max(0, currentVolume - 0.1);
+        const sl = document.getElementById('volumeSlider');
+        if (sl) sl.value = currentVolume;
+        isMuted = currentVolume === 0;
+        _applyVolume(); _updateVolIcon();
+      }
+      break;
+    case 'm': case 'M':
+      if (!fcVisible) { e.preventDefault(); toggleMute(); }
+      break;
+    case 'k': case 'K':
+      if (e.ctrlKey || e.metaKey) { e.preventDefault(); openSearch(); }
+      break;
+    case 'Escape':
+      if (document.getElementById('searchOverlay').style.display !== 'none') { closeSearch(); return; }
+      closeShortcuts(); closeSleepOverlay();
+      if (typeof closeTranscript === 'function') closeTranscript();
+      break;
+    // SR rating keys (only when flashcards visible + SR mode + flipped)
+    case '1': if (fcVisible && fcMode === 'sr' && fcFlipped) { e.preventDefault(); srRate(1); } break;
+    case '2': if (fcVisible && fcMode === 'sr' && fcFlipped) { e.preventDefault(); srRate(2); } break;
+    case '3': if (fcVisible && fcMode === 'sr' && fcFlipped) { e.preventDefault(); srRate(3); } break;
+    case '4': if (fcVisible && fcMode === 'sr' && fcFlipped) { e.preventDefault(); srRate(4); } break;
+  }
+});
 
 async function clearCache() {
   if (!db) await openDB();
