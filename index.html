@@ -495,6 +495,39 @@
     gap: 8px;
   }
   .pc-utils { margin-left: 4px; }
+
+  /* Volume control */
+  .vol-wrap {
+    display: flex; align-items: center; gap: 6px;
+    padding: 4px 8px; border: 1px solid var(--border);
+    border-radius: 8px; background: none;
+  }
+  .vol-icon { font-size: 14px; cursor: pointer; user-select: none; line-height: 1; }
+  #volumeSlider {
+    -webkit-appearance: none; appearance: none;
+    width: 70px; height: 4px; border-radius: 2px;
+    background: var(--border); outline: none; cursor: pointer;
+  }
+  #volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 14px; height: 14px;
+    border-radius: 50%; background: var(--accent); cursor: pointer;
+  }
+  #volumeSlider::-moz-range-thumb {
+    width: 14px; height: 14px; border: none;
+    border-radius: 50%; background: var(--accent); cursor: pointer;
+  }
+
+  /* Word highlight */
+  .word-hl {
+    border-radius: 3px;
+    transition: background 0.05s, color 0.05s;
+  }
+  .word-hl.active {
+    background: var(--accent);
+    color: #0f0e0b;
+    border-radius: 3px;
+    padding: 0 1px;
+  }
   .btn-ctrl {
     background: none;
     border: 1px solid var(--border);
@@ -670,6 +703,8 @@
     .btn-play { padding: 10px 20px; font-size: 13px; min-width: 80px; }
     #speedSelect { padding: 8px 6px; font-size: 11px; max-width: 58px; min-height: 42px; }
     .pc-utils .btn-ctrl { padding: 8px 8px; font-size: 16px; min-width: 40px; min-height: 40px; }
+    .vol-wrap { padding: 4px 6px; }
+    #volumeSlider { width: 52px; }
 
     /* ─────────────────────────────────────────
        HERO
@@ -2475,7 +2510,7 @@ body.touch-device .fc-front { display: flex; }
     <h2>🎙️ API-Keys einrichten</h2>
     <p>Konfiguriere die API-Keys für Audio-Wiedergabe und KI-Funktionen. Alle Keys werden nur lokal in deinem Browser gespeichert.</p>
 
-    <!-- ── ELEVENLABS ── -->
+    <!-- ── ELEVENLABS MULTI-KEY ── -->
     <div style="border:1px solid #2e2b22;border-radius:10px;padding:16px;margin-bottom:16px;">
       <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#e8a23a;margin-bottom:10px;">🔊 ElevenLabs — KI-Stimmen</div>
       <div class="setup-steps" style="margin-bottom:12px;">
@@ -2483,21 +2518,21 @@ body.touch-device .fc-front { display: flex; }
           <li>Kostenlos registrieren:<br>
             <a href="https://elevenlabs.io/app/developers/api-keys" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:6px;background:rgba(232,162,58,0.12);border:1px solid rgba(232,162,58,0.35);padding:5px 12px;border-radius:7px;font-size:11px;text-decoration:none;color:#e8a23a;font-family:'DM Mono',monospace;">🔑 elevenlabs.io/app/developers/api-keys ↗</a>
           </li>
-          <li style="margin-top:8px;">Key erstellen → bei Endpoint-Rechten <strong>Text to Speech</strong> + <strong>Voices</strong> aktivieren.</li>
+          <li style="margin-top:8px;">Key erstellen → <strong>Text to Speech</strong> Rechte aktivieren. <span style="color:#8a8270;">Free-Tier: 10.000 Zeichen/Monat pro Account.</span></li>
+          <li style="margin-top:8px;">Mehrere Accounts = mehr Zeichen. Keys werden der Reihe nach aufgebraucht.</li>
         </ol>
       </div>
-      <div class="char-warning">ℹ️ Free-Tier: <strong>10.000 Zeichen/Monat</strong>. Podcast ≈ 9.500 Zeichen. Jeder Abschnitt wird gecacht.</div>
-      <div class="key-input-wrap">
-        <input class="key-input" type="password" id="apiKeyInput" placeholder="sk_xxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="off" />
-        <button class="btn-confirm" id="elBtnConfirm" onclick="confirmKey()">Speichern →</button>
+      <div class="char-warning">ℹ️ Podcast ≈ 9.500 Zeichen. Mit 2 Keys = 2 Monate kostenlos. Jeder Abschnitt wird dauerhaft gecacht.</div>
+
+      <!-- Add new key -->
+      <div class="key-input-wrap" style="margin-top:12px;">
+        <input class="key-input" type="password" id="apiKeyInput" placeholder="sk_xxxxxxxx… (Key hinzufügen)" autocomplete="off" />
+        <button class="btn-confirm" id="elBtnConfirm" onclick="addElevenLabsKey()">+ Hinzufügen</button>
       </div>
-      <div class="error-msg" id="errorMsg">❌ Key ungültig – bitte prüfen.</div>
-      <div id="savedKeyInfo" style="display:none;margin-top:10px;background:#1a1915;border:1px solid #2e2b22;border-radius:8px;padding:10px 14px;align-items:center;gap:10px;flex-wrap:wrap;">
-        <span style="font-family:'DM Mono',monospace;font-size:11px;color:#7ec8a4;">✅ ElevenLabs Key:</span>
-        <code id="savedKeyMasked" style="font-family:'DM Mono',monospace;font-size:11px;color:#c8bfa6;flex:1;word-break:break-all;"></code>
-        <button onclick="copyKey()" id="copyKeyBtn" style="background:none;border:1px solid #3a3630;color:#8a8270;font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">📋</button>
-        <button onclick="deleteKey()" style="background:none;border:1px solid #3a3630;color:#8a8270;font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">🗑️</button>
-      </div>
+      <div class="error-msg" id="errorMsg">❌ Key ungültig oder bereits vorhanden.</div>
+
+      <!-- Saved keys list -->
+      <div id="elKeysList" style="margin-top:12px;display:flex;flex-direction:column;gap:6px;"></div>
     </div>
 
     <!-- ── ANTHROPIC ── -->
@@ -2557,9 +2592,9 @@ body.touch-device .fc-front { display: flex; }
   </div>
   <div class="player-controls">
     <div class="pc-core">
-      <button class="btn-ctrl" onclick="prevTurn()" title="Zurück">⏮</button>
+      <button class="btn-ctrl" onclick="prevTurn()" title="Zurück [←]">⏮</button>
       <button class="btn-ctrl btn-play" id="btnPlay" onclick="togglePlay()">▶ Play</button>
-      <button class="btn-ctrl" onclick="nextTurn()" title="Weiter">⏭</button>
+      <button class="btn-ctrl" onclick="nextTurn()" title="Weiter [→]">⏭</button>
       <select id="speedSelect" onchange="setSpeed(this.value)" title="Geschwindigkeit" style="background:var(--card);border:1px solid var(--border);color:var(--text);font-family:'DM Mono',monospace;font-size:11px;padding:6px 8px;border-radius:8px;cursor:pointer;outline:none;">
         <option value="0.75">0.75×</option>
         <option value="1" selected>1×</option>
@@ -2567,9 +2602,19 @@ body.touch-device .fc-front { display: flex; }
         <option value="1.5">1.5×</option>
         <option value="2">2×</option>
       </select>
+      <!-- Volume -->
+      <div class="vol-wrap" title="Lautstärke">
+        <span class="vol-icon" id="volIcon" onclick="toggleMute()" style="cursor:pointer;font-size:15px;user-select:none;">🔊</span>
+        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1"
+          oninput="setVolume(this.value)"
+          style="width:64px;accent-color:var(--accent);cursor:pointer;vertical-align:middle;">
+      </div>
     </div>
     <div class="pc-utils">
       <button class="btn-ctrl" onclick="openSearch()" title="Suchen (Ctrl+K)">🔍</button>
+      <button class="btn-ctrl" id="sleepBtn" onclick="openSleepTimer()" title="Sleep-Timer">⏱</button>
+      <button class="btn-ctrl" id="autoScrollBtn" onclick="toggleAutoScroll()" title="Auto-Scroll ein/aus">📌</button>
+      <button class="btn-ctrl" onclick="openShortcuts()" title="Tastaturkürzel">⌨️</button>
       <button class="btn-ctrl" onclick="toggleChat()" title="KI-Chat">💬</button>
       <button class="btn-ctrl" id="btnKey" onclick="showSetup()" title="API Keys">🔑</button>
       <button class="btn-ctrl" onclick="jumpToCurrent()" title="Aktuelle Stelle">🎯</button>
@@ -2688,36 +2733,131 @@ async function updateCacheStatus() {
 }
 
 // ── STATE ────────────────────────────────────────────────
-let apiKey     = '';
 let currentIdx = -1;
 let isPlaying  = false;
 let currentAudio = null;
 
-// ── SETUP / KEY ──────────────────────────────────────────
-const LS_KEY = 'hurrelmann_elevenlabs_key';
+// ── ELEVENLABS MULTI-KEY SYSTEM ──────────────────────────
+// Keys stored as JSON array in localStorage.
+// Rotation: try current key → on quota/auth error → next key → … → fallback TTS
+const LS_KEYS = 'hurrelmann_el_keys_v2';  // array of key strings
+const LS_KEY  = 'hurrelmann_elevenlabs_key'; // legacy single-key (migrated on load)
 
-function maskKey(k) {
-  if (!k || k.length < 10) return k;
-  return k.slice(0, 6) + '••••••••••••' + k.slice(-4);
+let elKeys    = [];   // array of key strings
+let elKeyIdx  = 0;    // currently active key index
+let apiKey    = '';   // active key string (kept for compatibility)
+
+// ── Migration: import old single key ──────────────────────
+(function migrateLegacyKey() {
+  try {
+    const legacy = localStorage.getItem(LS_KEY);
+    const multi  = localStorage.getItem(LS_KEYS);
+    if (legacy && legacy !== '__fallback__' && legacy !== '__cached__' && !multi) {
+      localStorage.setItem(LS_KEYS, JSON.stringify([legacy]));
+      localStorage.removeItem(LS_KEY);
+    }
+  } catch(e) {}
+})();
+
+// ── Load keys from storage ────────────────────────────────
+function loadElKeys() {
+  try {
+    const raw = localStorage.getItem(LS_KEYS);
+    elKeys = raw ? JSON.parse(raw) : [];
+  } catch(e) { elKeys = []; }
+  elKeyIdx = 0;
+  apiKey = elKeys[0] || '';
 }
 
-function updateSavedKeyUI() {
-  // ElevenLabs key
-  const stored = localStorage.getItem(LS_KEY);
-  const info = document.getElementById('savedKeyInfo');
-  const masked = document.getElementById('savedKeyMasked');
-  if (stored && stored !== '__fallback__') {
-    info.style.display = 'flex';
-    masked.textContent = maskKey(stored);
-    document.getElementById('apiKeyInput').value = '';
-    document.getElementById('apiKeyInput').placeholder = 'Neuen Key eingeben zum Ersetzen…';
-  } else {
-    info.style.display = 'none';
-    document.getElementById('apiKeyInput').placeholder = 'sk_xxxxxxxxxxxxxxxxxxxxxxxx';
+function saveElKeys() {
+  try { localStorage.setItem(LS_KEYS, JSON.stringify(elKeys)); } catch(e) {}
+}
+
+// ── Rotate to next key (called on quota/auth error) ───────
+function rotateToNextKey() {
+  elKeyIdx++;
+  if (elKeyIdx < elKeys.length) {
+    apiKey = elKeys[elKeyIdx];
+    document.getElementById('playerSpeaker').textContent =
+      `🔄 Key ${elKeyIdx + 1}/${elKeys.length} aktiv…`;
+    updateElKeysUI();
+    return true;  // we have another key to try
   }
-  // Anthropic key
+  // All keys exhausted
+  apiKey = '';
+  updateElKeysUI();
+  return false;
+}
+
+// ── Add a new key ─────────────────────────────────────────
+function addElevenLabsKey() {
+  const inp = document.getElementById('apiKeyInput').value.trim();
+  const err = document.getElementById('errorMsg');
+  err.style.display = 'none';
+
+  if (!inp || inp.length < 10) { err.style.display = 'block'; return; }
+  if (elKeys.includes(inp))    { err.style.display = 'block'; return; }
+
+  elKeys.push(inp);
+  saveElKeys();
+  // If this is the first key, activate it
+  if (elKeys.length === 1) {
+    elKeyIdx = 0;
+    apiKey = inp;
+  }
+  document.getElementById('apiKeyInput').value = '';
+  document.getElementById('setupOverlay').style.display = 'none';
+  document.getElementById('playerSpeaker').textContent =
+    `✅ ${elKeys.length} Key${elKeys.length > 1 ? 's' : ''} gespeichert – drücke Play!`;
+  updateElKeysUI();
+  updateCacheStatus();
+}
+
+// ── Remove one key by index ───────────────────────────────
+function deleteElKey(i) {
+  if (!confirm(`Key ${i + 1} wirklich löschen?`)) return;
+  elKeys.splice(i, 1);
+  saveElKeys();
+  // Adjust active index
+  if (elKeyIdx >= elKeys.length) elKeyIdx = Math.max(0, elKeys.length - 1);
+  apiKey = elKeys[elKeyIdx] || '';
+  updateElKeysUI();
+  if (!apiKey) document.getElementById('playerSpeaker').textContent = 'Kein Key – bitte Key hinzufügen.';
+}
+
+// ── Render the keys list in the modal ─────────────────────
+function updateElKeysUI() {
+  const list = document.getElementById('elKeysList');
+  if (!list) return;
+  if (elKeys.length === 0) {
+    list.innerHTML = '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:#5a5648;padding:6px 0;">Noch kein Key gespeichert.</div>';
+    return;
+  }
+  list.innerHTML = elKeys.map((k, i) => {
+    const masked = k.slice(0, 6) + '••••••••••••' + k.slice(-4);
+    const isActive = (i === elKeyIdx);
+    const badge = isActive
+      ? '<span style="background:rgba(232,162,58,0.18);color:#e8a23a;border:1px solid rgba(232,162,58,0.4);font-family:\'DM Mono\',monospace;font-size:9px;padding:2px 7px;border-radius:4px;margin-right:6px;">▶ AKTIV</span>'
+      : `<span style="background:rgba(255,255,255,0.04);color:#5a5648;font-family:'DM Mono',monospace;font-size:9px;padding:2px 7px;border-radius:4px;margin-right:6px;">#${i + 1}</span>`;
+    return `
+      <div style="display:flex;align-items:center;gap:8px;background:#1a1915;border:1px solid ${isActive ? '#3a3020' : '#222'};border-radius:8px;padding:9px 12px;flex-wrap:wrap;">
+        ${badge}
+        <code style="font-family:'DM Mono',monospace;font-size:11px;color:#c8bfa6;flex:1;word-break:break-all;">${masked}</code>
+        <button onclick="deleteElKey(${i})" title="Key löschen" style="background:none;border:1px solid #3a3630;color:#8a8270;font-family:'DM Mono',monospace;font-size:11px;padding:3px 9px;border-radius:6px;cursor:pointer;flex-shrink:0;">🗑️</button>
+      </div>`;
+  }).join('');
+}
+
+// ── updateSavedKeyUI: called by showSetup ─────────────────
+function updateSavedKeyUI() {
+  updateElKeysUI();
   updateAnthropicKeyUI();
 }
+
+// Legacy stubs so old call-sites don't crash
+function confirmKey() { addElevenLabsKey(); }
+function deleteKey()  { if (elKeys.length) deleteElKey(0); }
+function copyKey()    {}  // no longer needed with multi-key list
 
 function updateAnthropicKeyUI() {
   const storedA = localStorage.getItem(ANTHROPIC_KEY_LS);
@@ -2819,19 +2959,18 @@ function deleteKey() {
   document.getElementById('playerSpeaker').textContent = 'Key gelöscht – bitte neuen Key eingeben.';
 }
 
-document.getElementById('apiKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') confirmKey(); });
+document.getElementById('apiKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') addElevenLabsKey(); });
 document.getElementById('anthropicKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') saveAnthropicKey(); });
 
-// On load: restore saved key + check cache
+// On load: restore keys + check cache
+loadElKeys();
 openDB().then(async () => {
   await updateCacheStatus();
-  // Try to restore saved key first
-  const stored = localStorage.getItem(LS_KEY);
-  if (stored && stored !== '__fallback__') {
-    apiKey = stored;
+  if (elKeys.length > 0) {
     document.getElementById('setupOverlay').style.display = 'none';
-    document.getElementById('playerSpeaker').textContent = '✅ Key geladen – drücke Play!';
-    updateSavedKeyUI();
+    document.getElementById('playerSpeaker').textContent =
+      `✅ ${elKeys.length} Key${elKeys.length > 1 ? 's' : ''} geladen – drücke Play!`;
+    updateElKeysUI();
     return;
   }
   // Check if ALL turns are cached → no key needed
@@ -2845,38 +2984,96 @@ openDB().then(async () => {
     document.getElementById('playerSpeaker').textContent = '✅ Alles lokal gespeichert – kein API-Key nötig!';
     apiKey = '__cached__';
   }
-  updateSavedKeyUI();
+  updateElKeysUI();
 });
 
-// ── TTS FETCH (with persistent cache) ───────────────────
+// ── TTS FETCH (with persistent cache + key rotation) ─────
 async function fetchAudio(idx) {
-  // 1. Try cache first
+  // 1. Try cache first — no key needed
   const cached = await getAudioURL(idx);
   if (cached) return cached;
 
-  // 2. Need API key for fresh fetch
+  // 2. Need a key for fresh fetch
   if (!apiKey || apiKey === '__cached__' || apiKey === '__fallback__') throw new Error('no-key');
+  if (elKeys.length === 0) throw new Error('no-key');
 
-  const turn = turns[idx];
+  const turn   = turns[idx];
   const voiceId = turn.isA ? VOICE_ALEX : VOICE_LENA;
-  const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
-    method: 'POST',
-    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
-    body: JSON.stringify({
-      text: turn.text,
-      model_id: MODEL,
-      voice_settings: { stability: 0.48, similarity_boost: 0.78, style: 0.15, use_speaker_boost: true }
-    })
-  });
-  if (!res.ok) throw new Error(`ElevenLabs ${res.status}`);
 
-  const blob = await res.blob();
-  // Save to IndexedDB persistently
-  await dbSet(`turn_${idx}`, blob);
-  const url = URL.createObjectURL(blob);
-  urlCache[idx] = url;
-  updateCacheStatus(); // update counter in UI
-  return url;
+  // 3. Try keys in order until one succeeds or all are exhausted
+  while (elKeyIdx < elKeys.length) {
+    const keyToTry = elKeys[elKeyIdx];
+    let res;
+    try {
+      res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        method: 'POST',
+        headers: { 'xi-api-key': keyToTry, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
+        body: JSON.stringify({
+          text: turn.text,
+          model_id: MODEL,
+          voice_settings: { stability: 0.48, similarity_boost: 0.78, style: 0.15, use_speaker_boost: true }
+        })
+      });
+    } catch(networkErr) {
+      throw networkErr; // real network error — don't rotate
+    }
+
+    if (res.ok) {
+      // Success — cache and return
+      const blob = await res.blob();
+      await dbSet(`turn_${idx}`, blob);
+      // Use data URL on Safari, blob URL elsewhere
+      let url;
+      if (_isSafari) {
+        url = await new Promise((res2, rej) => {
+          const reader = new FileReader();
+          reader.onload  = () => res2(reader.result);
+          reader.onerror = () => rej(reader.error);
+          reader.readAsDataURL(blob);
+        });
+      } else {
+        url = URL.createObjectURL(blob);
+      }
+      urlCache[idx] = url;
+      updateCacheStatus();
+      return url;
+    }
+
+    // ── Error handling ────────────────────────────────────
+    if (res.status === 401) {
+      // Invalid key → rotate
+      console.warn(`Key ${elKeyIdx + 1} ungültig (401) → nächster Key`);
+      document.getElementById('playerSpeaker').textContent =
+        `⚠️ Key ${elKeyIdx + 1} ungültig → versuche Key ${elKeyIdx + 2}…`;
+      if (!rotateToNextKey()) throw new Error('all-keys-invalid');
+      continue;
+    }
+
+    if (res.status === 429 || res.status === 422) {
+      // Quota exhausted → rotate
+      console.warn(`Key ${elKeyIdx + 1} Quota leer (${res.status}) → nächster Key`);
+      document.getElementById('playerSpeaker').textContent =
+        `📭 Key ${elKeyIdx + 1} Quota leer → Key ${elKeyIdx + 2}…`;
+      if (!rotateToNextKey()) throw new Error('all-keys-exhausted');
+      continue;
+    }
+
+    // Check JSON body for quota message
+    let body = '';
+    try { body = await res.text(); } catch(e) {}
+    if (body.toLowerCase().includes('quota') || body.toLowerCase().includes('credit')) {
+      console.warn(`Key ${elKeyIdx + 1} Quota leer (body) → nächster Key`);
+      document.getElementById('playerSpeaker').textContent =
+        `📭 Key ${elKeyIdx + 1} Quota leer → Key ${elKeyIdx + 2}…`;
+      if (!rotateToNextKey()) throw new Error('all-keys-exhausted');
+      continue;
+    }
+
+    // Other error (500, etc.) — don't rotate, just fail
+    throw new Error(`ElevenLabs ${res.status}`);
+  }
+
+  throw new Error('no-key');
 }
 
 // ── PLAYBACK ─────────────────────────────────────────────
@@ -2931,6 +3128,7 @@ async function speakTurn(idx) {
     audio.src = url;
     currentAudio = audio;
     audio.playbackRate = playbackRate;
+    audio.volume = isMuted ? 0 : currentVolume;
     // load() is required on Safari before play() with a blob URL
     audio.load();
     const playPromise = audio.play();
@@ -2942,15 +3140,24 @@ async function speakTurn(idx) {
       });
     }
 
+    // Start word highlighting
+    _startElevenLabsHighlight(audio, idx);
+
     // Pre-fetch next silently
     if (idx + 1 < turns.length) fetchAudio(idx + 1).catch(() => {});
 
-    audio.onended = () => { if (isPlaying && currentIdx === idx) speakTurn(idx + 1); };
-    audio.onerror = () => { if (isPlaying) speakTurn(idx + 1); };
+    audio.onended = () => { _clearWordHighlight(); if (isPlaying && currentIdx === idx) speakTurn(idx + 1); };
+    audio.onerror = () => { _clearWordHighlight(); if (isPlaying) speakTurn(idx + 1); };
 
   } catch(err) {
     console.warn('ElevenLabs fehlgeschlagen, nutze Browser-Stimme:', err.message);
-    if (err.message === 'no-key' && !apiKey) showSetup();
+    if (err.message === 'no-key' && elKeys.length === 0) showSetup();
+    else if (err.message === 'all-keys-exhausted') {
+      document.getElementById('playerSpeaker').textContent = '📭 Alle Keys aufgebraucht – Browser-Stimme aktiv.';
+    } else if (err.message === 'all-keys-invalid') {
+      document.getElementById('playerSpeaker').textContent = '❌ Alle Keys ungültig – bitte neue Keys hinzufügen.';
+      showSetup();
+    }
     fallbackSpeak(idx);
   }
 }
@@ -2987,8 +3194,13 @@ function fallbackSpeak(idx) {
     utter.voice = turn.isA ? (male || deVoices[0]) : (female || deVoices[Math.min(1, deVoices.length-1)]);
   }
 
-  utter.onend  = () => { if (isPlaying && currentIdx === idx) speakTurn(idx + 1); };
-  utter.onerror = (e) => { if (e.error !== 'interrupted' && isPlaying) speakTurn(idx + 1); };
+  utter.onend  = () => { _clearWordHighlight(); if (isPlaying && currentIdx === idx) speakTurn(idx + 1); };
+  utter.onerror = (e) => { _clearWordHighlight(); if (e.error !== 'interrupted' && isPlaying) speakTurn(idx + 1); };
+  utter.volume = isMuted ? 0 : currentVolume;
+
+  // Word highlighting via browser onboundary event
+  _startFallbackHighlight(utter, idx);
+
   synth.speak(utter);
 
   // Store reference so pause/stop work
@@ -3032,6 +3244,7 @@ function play() {
   isPlaying = true;
   const start = currentIdx < 0 ? 0 : currentIdx;
   if (currentAudio && currentAudio.paused && !currentAudio._isFallback) {
+    currentAudio.volume = isMuted ? 0 : currentVolume;
     currentAudio.play();
     document.getElementById('btnPlay').textContent = '⏸ Pause';
   } else {
@@ -3040,12 +3253,14 @@ function play() {
 }
 function pause() {
   isPlaying = false;
+  _clearWordHighlight();
   document.getElementById('btnPlay').textContent = '▶ Play';
   if (currentAudio) currentAudio.pause();
   if (currentAudio?._isFallback) window.speechSynthesis.pause();
 }
 function stopAll() {
   isPlaying = false;
+  _clearWordHighlight();
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   window.speechSynthesis.cancel();
   document.getElementById('btnPlay').textContent = '▶ Play';
@@ -3690,13 +3905,11 @@ function showMegaResult() {
 let playbackRate = 1;
 function setSpeed(val) {
   playbackRate = parseFloat(val);
-  // Apply immediately if audio is playing
   if (currentAudio && currentAudio.playbackRate !== undefined) {
     currentAudio.playbackRate = playbackRate;
   }
   try { localStorage.setItem('hurrelmann_speed', val); } catch(e){}
 }
-// Restore saved speed on load
 try {
   const savedSpeed = localStorage.getItem('hurrelmann_speed');
   if (savedSpeed) {
@@ -3705,6 +3918,179 @@ try {
     if (sel) sel.value = savedSpeed;
   }
 } catch(e){}
+
+// ── VOLUME ───────────────────────────────────────────────
+let currentVolume = 1;
+let isMuted = false;
+
+function setVolume(val) {
+  currentVolume = parseFloat(val);
+  isMuted = currentVolume === 0;
+  _applyVolume();
+  _updateVolIcon();
+  try { localStorage.setItem('hurrelmann_vol', val); } catch(e){}
+}
+
+function toggleMute() {
+  isMuted = !isMuted;
+  _applyVolume();
+  _updateVolIcon();
+}
+
+function _applyVolume() {
+  const v = isMuted ? 0 : currentVolume;
+  if (currentAudio && currentAudio.volume !== undefined) currentAudio.volume = v;
+  const slider = document.getElementById('volumeSlider');
+  if (slider) slider.value = isMuted ? 0 : currentVolume;
+}
+
+function _updateVolIcon() {
+  const icon = document.getElementById('volIcon');
+  if (!icon) return;
+  const v = isMuted ? 0 : currentVolume;
+  icon.textContent = v === 0 ? '🔇' : v < 0.4 ? '🔈' : v < 0.75 ? '🔉' : '🔊';
+}
+
+// Restore saved volume
+try {
+  const savedVol = localStorage.getItem('hurrelmann_vol');
+  if (savedVol !== null) {
+    currentVolume = parseFloat(savedVol);
+    const slider = document.getElementById('volumeSlider');
+    if (slider) slider.value = currentVolume;
+    _updateVolIcon();
+  }
+} catch(e){}
+
+// ── WORD HIGHLIGHTING ────────────────────────────────────
+// Strategy:
+// • ElevenLabs audio: estimate word timing from audio.currentTime
+//   proportional to char position in text (not perfect but works well)
+// • Browser TTS fallback: use SpeechSynthesisUtterance.onboundary
+//   which fires with exact charIndex (perfect)
+let _hlInterval = null;
+let _hlWords = [];    // array of {el, startFrac, endFrac}
+let _hlTurnIdx = -1;
+
+function _wrapTurnWords(idx) {
+  // Wrap each word in the active turn's <p> tags with <span class="word-hl">
+  // Skip if already wrapped for this turn
+  if (_hlTurnIdx === idx) return;
+  _hlTurnIdx = idx;
+  _hlWords = [];
+
+  // Clear previous highlights
+  document.querySelectorAll('.word-hl.active').forEach(s => s.classList.remove('active'));
+
+  const turn = turns[idx];
+  if (!turn) return;
+
+  // Find all <p> elements in this turn
+  const paragraphs = turn.el.querySelectorAll('.speech p');
+  if (!paragraphs.length) return;
+
+  // Build full plain text to compute char positions
+  let fullText = '';
+  const pSegments = []; // {el, text, startChar}
+  paragraphs.forEach(p => {
+    // Restore original text if previously wrapped
+    if (p.querySelector('.word-hl')) {
+      p.textContent = p.innerText;
+    }
+    pSegments.push({ el: p, text: p.textContent, startChar: fullText.length });
+    fullText += (fullText ? ' ' : '') + p.textContent;
+  });
+
+  const totalChars = fullText.length;
+  if (totalChars === 0) return;
+
+  // Wrap each word in each paragraph
+  pSegments.forEach(seg => {
+    const words = seg.text.split(/(\s+)/); // keep whitespace tokens
+    let charPos = seg.startChar;
+    seg.el.innerHTML = words.map(token => {
+      const start = charPos;
+      charPos += token.length;
+      // Whitespace: keep as-is
+      if (/^\s+$/.test(token) || token === '') return token;
+      const startFrac = start / totalChars;
+      const endFrac   = charPos / totalChars;
+      const id = `whl_${idx}_${_hlWords.length}`;
+      _hlWords.push({ id, startFrac, endFrac });
+      return `<span class="word-hl" id="${id}">${token}</span>`;
+    }).join('');
+  });
+}
+
+function _clearWordHighlight() {
+  if (_hlInterval) { clearInterval(_hlInterval); _hlInterval = null; }
+  document.querySelectorAll('.word-hl.active').forEach(s => s.classList.remove('active'));
+}
+
+function _startElevenLabsHighlight(audio, idx) {
+  _clearWordHighlight();
+  _wrapTurnWords(idx);
+  if (!_hlWords.length) return;
+
+  let lastWordIdx = -1;
+
+  _hlInterval = setInterval(() => {
+    if (!audio || audio.paused || audio.ended) { _clearWordHighlight(); return; }
+    const dur = audio.duration;
+    if (!dur || isNaN(dur)) return;
+
+    const frac = audio.currentTime / dur;
+
+    // Find current word
+    let wi = _hlWords.findIndex(w => frac >= w.startFrac && frac < w.endFrac);
+    if (wi === -1) {
+      // Past last word or before first
+      wi = frac >= 1 ? _hlWords.length - 1 : -1;
+    }
+
+    if (wi !== lastWordIdx) {
+      // Remove old
+      if (lastWordIdx >= 0 && lastWordIdx < _hlWords.length) {
+        const el = document.getElementById(_hlWords[lastWordIdx].id);
+        if (el) el.classList.remove('active');
+      }
+      // Add new
+      if (wi >= 0 && wi < _hlWords.length) {
+        const el = document.getElementById(_hlWords[wi].id);
+        if (el) el.classList.add('active');
+      }
+      lastWordIdx = wi;
+    }
+  }, 50); // poll every 50ms — smooth enough, lightweight
+}
+
+function _startFallbackHighlight(utter, idx) {
+  _clearWordHighlight();
+  _wrapTurnWords(idx);
+  if (!_hlWords.length) return;
+
+  let lastWordIdx = -1;
+
+  utter.onboundary = (event) => {
+    if (event.name !== 'word') return;
+    const charIdx  = event.charIndex;
+    const totalChars = turns[idx]?.el?.innerText?.length || 1;
+    const frac = charIdx / totalChars;
+
+    const wi = _hlWords.findIndex(w => frac >= w.startFrac && frac < w.endFrac);
+    if (wi === lastWordIdx) return;
+
+    if (lastWordIdx >= 0 && lastWordIdx < _hlWords.length) {
+      const el = document.getElementById(_hlWords[lastWordIdx].id);
+      if (el) el.classList.remove('active');
+    }
+    if (wi >= 0) {
+      const el = document.getElementById(_hlWords[wi].id);
+      if (el) el.classList.add('active');
+    }
+    lastWordIdx = wi;
+  };
+}
 
 // ── SEARCH ───────────────────────────────────────────────
 let searchResultEls = [];
