@@ -2514,7 +2514,6 @@ async function dbSet(key, val) {
 
 // Session-level URL cache (data URLs on Safari, blob URLs elsewhere)
 const urlCache = {};
-const _alignmentCache = {}; // idx -> ElevenLabs alignment (char-level timestamps)
 const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
 async function getAudioURL(idx) {
@@ -2682,10 +2681,6 @@ function updateSavedKeyUI() {
   updateAnthropicKeyUI();
 }
 
-// Legacy stubs so old call-sites don't crash
-function confirmKey() { addElevenLabsKey(); }
-function deleteKey()  { if (elKeys.length) deleteElKey(0); }
-function copyKey()    {}  // no longer needed with multi-key list
 
 function updateAnthropicKeyUI() {
   const storedA = localStorage.getItem(ANTHROPIC_KEY_LS);
@@ -2833,10 +2828,9 @@ async function fetchAudio(idx) {
     const keyToTry = elKeys[elKeyIdx];
     let res;
     try {
-      // /with-timestamps gives base64 audio + per-character timing for precise word highlight
-      res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}/with-timestamps`, {
+      res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
         method: 'POST',
-        headers: { 'xi-api-key': keyToTry, 'Content-Type': 'application/json' },
+        headers: { 'xi-api-key': keyToTry, 'Content-Type': 'application/json', 'Accept': 'audio/mpeg' },
         body: JSON.stringify({
           text: turn.text,
           model_id: MODEL,
@@ -2848,19 +2842,8 @@ async function fetchAudio(idx) {
     }
 
     if (res.ok) {
-      // Parse JSON from /with-timestamps: { audio_base64, alignment }
-      let blob;
-      try {
-        const tsData = await res.json();
-        if (tsData.alignment) _alignmentCache[idx] = tsData.alignment;
-        const b64 = tsData.audio_base64;
-        const bytes = atob(b64);
-        const ua = new Uint8Array(bytes.length);
-        for (let i = 0; i < bytes.length; i++) ua[i] = bytes.charCodeAt(i);
-        blob = new Blob([ua], { type: 'audio/mpeg' });
-      } catch(parseErr) {
-        throw new Error('parse-error: ' + parseErr.message);
-      }
+      // Success — cache and return
+      const blob = await res.blob();
       await dbSet(`turn_${idx}`, blob);
       // Use data URL on Safari, blob URL elsewhere
       let url;
@@ -3866,7 +3849,7 @@ function _wrapTurnWords(idx) {
       const startFrac = start / totalChars;
       const endFrac   = charPos / totalChars;
       const id = `whl_${idx}_${_hlWords.length}`;
-      _hlWords.push({ id, startFrac, endFrac, sc: start, ec: charPos });
+      _hlWords.push({ id, startFrac, endFrac });
       return `<span class="word-hl" id="${id}">${token}</span>`;
     }).join('');
   });
@@ -3883,38 +3866,15 @@ function _startElevenLabsHighlight(audio, idx) {
   _wrapTurnWords(idx);
   if (!_hlWords.length) return;
 
-  const alignment = _alignmentCache[idx]; // precise char-level timing from ElevenLabs
   let lastWordIdx = -1;
 
   _hlInterval = setInterval(() => {
     if (!audio || audio.paused || audio.ended) { _clearWordHighlight(); return; }
-    const t = audio.currentTime;
-    let wi = -1;
-
-    if (alignment && alignment.character_start_times_seconds) {
-      // PRECISE MODE: use actual character timestamps
-      const starts = alignment.character_start_times_seconds;
-      const ends   = alignment.character_end_times_seconds;
-      for (let i = 0; i < _hlWords.length; i++) {
-        const w = _hlWords[i];
-        const si = Math.min(w.sc, starts.length - 1);
-        const ei = Math.min(Math.max(w.ec - 1, si), ends.length - 1);
-        const ws = starts[si] || 0;
-        const we = ends[ei]   || (ws + 0.2);
-        if (t >= ws && t < we) { wi = i; break; }
-        if (i < _hlWords.length - 1) {
-          const ns = starts[Math.min(_hlWords[i+1].sc, starts.length-1)] || Infinity;
-          if (t >= we && t < ns) { wi = i; break; }
-        }
-      }
-    } else {
-      // FALLBACK: proportional by character count
-      const dur = audio.duration;
-      if (!dur || isNaN(dur)) return;
-      const frac = t / dur;
-      wi = _hlWords.findIndex(w => frac >= w.startFrac && frac < w.endFrac);
-      if (wi === -1) wi = frac >= 1 ? _hlWords.length - 1 : -1;
-    }
+    const dur = audio.duration;
+    if (!dur || isNaN(dur)) return;
+    const frac = audio.currentTime / dur;
+    let wi = _hlWords.findIndex(w => frac >= w.startFrac && frac < w.endFrac);
+    if (wi === -1) wi = frac >= 1 ? _hlWords.length - 1 : -1;
 
     if (wi !== lastWordIdx) {
       if (lastWordIdx >= 0 && lastWordIdx < _hlWords.length) {
@@ -3927,7 +3887,7 @@ function _startElevenLabsHighlight(audio, idx) {
       }
       lastWordIdx = wi;
     }
-  }, 40);
+  }, 50);
 }
 
 function _startFallbackHighlight(utter, idx) {
