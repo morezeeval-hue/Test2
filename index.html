@@ -832,6 +832,8 @@
 
   /* ── SINGLE NARRATOR – warm accent colour ──────────── */
   .speaker-a { background:rgba(232,162,58,0.12); color:var(--accent); border:1px solid rgba(232,162,58,0.3); }
+  .speaker-b { background:rgba(126,200,164,0.12); color:var(--accent3); border:1px solid rgba(126,200,164,0.3); }
+  .speaker-b + .speech .name { color:var(--accent3); }
   .speaker-a + .speech .name { color: var(--accent); }
 
   /* ── HURRELMANN TWO-CIRCLES DIAGRAM ─────────────────── */
@@ -994,6 +996,7 @@
   </ul>
 </nav>
 
+<div id="podcastContent">
 <div id="ep1" style="background:linear-gradient(90deg,var(--accent),var(--accent2));padding:10px 24px;text-align:center;">
   <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.15em;color:#0f0e0b;font-weight:600;text-transform:uppercase;">▶ Folge 1 — Hurrelmann Komplett</span>
 </div>
@@ -1671,6 +1674,8 @@
 </div>
 
 <!-- SEARCH OVERLAY -->
+</div><!-- /podcastContent -->
+
 <div id="searchOverlay" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(10,9,7,0.92);backdrop-filter:blur(8px);padding:60px 24px 24px;overflow-y:auto;" onclick="closeSearchOutside(event)">
   <div style="max-width:680px;margin:0 auto;">
     <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:12px 18px;margin-bottom:20px;">
@@ -2478,16 +2483,7 @@ const VOICE_ALEX = VOICE_NARRATOR; // legacy alias
 const VOICE_LENA = VOICE_NARRATOR; // legacy alias
 
 // ── COLLECT TURNS ────────────────────────────────────────
-const turns = [];
-document.querySelectorAll('.turn').forEach(turn => {
-  const isA = turn.querySelector('.speaker-a') !== null;
-  const nameEl = turn.querySelector('.name');
-  let text = '';
-  turn.querySelectorAll('.speech p').forEach(p => text += p.innerText + ' ');
-  const chapter = turn.closest('.chapter');
-  const chapterTitle = chapter ? chapter.querySelector('.chapter-title')?.innerText.replace(/\n/g,' ') : '';
-  turns.push({ el: turn, speaker: nameEl?.innerText || (isA ? 'Alex' : 'Lena'), isA, text: text.trim(), chapter: chapterTitle });
-});
+const turns = []; // populated by _refreshTurns()
 
 // ── INDEXEDDB PERSISTENT CACHE ───────────────────────────
 const DB_NAME = 'hurrelmann_podcast_v1';
@@ -2806,6 +2802,13 @@ document.getElementById('anthropicKeyInput').addEventListener('keydown', e => { 
 
 // On load: restore keys + check cache
 loadElKeys();
+// Apply saved topic style and collect turns before DB init
+(function() {
+  var savedId = localStorage.getItem(ACTIVE_TOPIC_KEY) || 'hurrelmann';
+  _applyTopicStyle(savedId);
+  _refreshTurns();
+})();
+
 openDB().then(async () => {
   await updateCacheStatus();
   if (elKeys.length > 0) {
@@ -4997,6 +5000,48 @@ function renderTopicList() {
   }).join('');
 }
 
+
+// ── REFRESH TURNS FROM DOM ───────────────────────────────
+function _refreshTurns() {
+  turns.length = 0;
+  var container = document.getElementById('podcastContent') || document;
+  container.querySelectorAll('.turn').forEach(function(turn) {
+    var isA = turn.querySelector('.speaker-a') !== null;
+    var nameEl = turn.querySelector('.name');
+    var text = '';
+    turn.querySelectorAll('.speech p').forEach(function(p) { text += p.innerText + ' '; });
+    var chapter = turn.closest('.chapter');
+    var chapterTitle = chapter ? (chapter.querySelector('.chapter-title') ? chapter.querySelector('.chapter-title').innerText.replace(/\n/g,' ') : '') : '';
+    turns.push({ el: turn, speaker: nameEl ? nameEl.innerText : (isA ? 'Alex' : 'Lena'), isA: isA, text: text.trim(), chapter: chapterTitle });
+  });
+}
+
+// ── APPLY VISUAL STYLE FOR ACTIVE TOPIC ─────────────────
+function _applyTopicStyle(id) {
+  var isDialog = id === 'hurrelmann-dialog';
+  var ep1Banner = document.getElementById('ep1');
+  if (ep1Banner) {
+    var label = ep1Banner.querySelector('span');
+    if (label) label.textContent = isDialog
+      ? '▶ Dialog-Format — Hurrelmann (Archiv)'
+      : '▶ Folge 1 — Hurrelmann Komplett';
+  }
+  var allTurns = (document.getElementById('podcastContent') || document).querySelectorAll('.turn');
+  allTurns.forEach(function(turn, i) {
+    var tag  = turn.querySelector('.speaker-tag');
+    var name = turn.querySelector('.name');
+    if (!tag || !name) return;
+    if (isDialog) {
+      var isAlex = i % 2 === 0;
+      tag.className  = 'speaker-tag ' + (isAlex ? 'speaker-a' : 'speaker-b');
+      name.textContent = isAlex ? 'Alex' : 'Lena';
+    } else {
+      tag.className  = 'speaker-tag speaker-a';
+      name.textContent = 'Guide';
+    }
+  });
+}
+
 function switchTopic(id) {
   const entry = PODCAST_REGISTRY.find(p => p.id === id);
   if (!entry) return;
@@ -5016,6 +5061,12 @@ function switchTopic(id) {
 
   // Save active topic
   localStorage.setItem(ACTIVE_TOPIC_KEY, id);
+
+  // Update DOM: speaker names, tags, ep banner
+  _applyTopicStyle(id);
+
+  // Re-collect turns[] from updated DOM
+  _refreshTurns();
 
   // Reset flashcards to match topic
   fcDeck = [...FC_CARDS];
