@@ -76,7 +76,6 @@
     line-height: 1.7;
     min-height: 100vh;
     transition: background 0.3s, color 0.3s;
-    overflow-x: hidden;
   }
 
   /* HERO */
@@ -687,10 +686,6 @@
       flex-direction: column;
       gap: 5px;
       align-items: stretch;
-      left: 0 !important;
-      right: 0 !important;
-      width: 100% !important;
-      box-sizing: border-box;
     }
     /* Row 1: one-line info */
     .player-info {
@@ -707,7 +702,7 @@
     .progress-label { font-size: 9px; }
     /* Rows 3+4: core controls and utils */
     .player-controls { flex-direction: column; gap: 5px; align-items: stretch; }
-    .pc-core, .pc-utils { justify-content: center; gap: 6px; margin-left: 0; flex-wrap: wrap; }
+    .pc-core, .pc-utils { justify-content: center; gap: 6px; margin-left: 0; }
 
     /* Button sizing */
     .btn-ctrl {
@@ -829,63 +824,6 @@
     #fc-flip-btn { font-size: 13px; padding: 15px 0; }
   }
 
-
-  /* ── SINGLE NARRATOR – warm accent colour ──────────── */
-  .speaker-a { background:rgba(232,162,58,0.12); color:var(--accent); border:1px solid rgba(232,162,58,0.3); }
-  .speaker-b { background:rgba(126,200,164,0.12); color:var(--accent3); border:1px solid rgba(126,200,164,0.3); }
-  .speaker-b + .speech .name { color:var(--accent3); }
-  .speaker-a + .speech .name { color: var(--accent); }
-
-  /* ── HURRELMANN TWO-CIRCLES DIAGRAM ─────────────────── */
-  .hurr-wrap {
-    margin:24px 0; padding:24px 20px;
-    background:linear-gradient(135deg,rgba(232,162,58,0.04),rgba(126,200,164,0.04));
-    border:1px solid var(--border); border-radius:18px;
-  }
-  .hurr-title { font-family:'Fraunces',serif; font-size:1.05rem; font-weight:700; color:var(--text); margin-bottom:3px; }
-  .hurr-sub   { font-family:'DM Mono',monospace; font-size:10px; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin-bottom:18px; }
-  .hurr-circles { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; }
-  .hurr-circle {
-    width:170px; height:170px; border-radius:50%;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:18px; position:relative; flex-shrink:0;
-  }
-  .hurr-circle.inn {
-    background:radial-gradient(circle,rgba(232,162,58,.18) 0%,rgba(232,162,58,.04) 100%);
-    border:2px solid rgba(232,162,58,.5); margin-right:-30px; z-index:1;
-  }
-  .hurr-circle.out {
-    background:radial-gradient(circle,rgba(126,200,164,.18) 0%,rgba(126,200,164,.04) 100%);
-    border:2px solid rgba(126,200,164,.5); margin-left:-30px; z-index:1;
-  }
-  .hurr-clabel { font-family:'DM Mono',monospace; font-size:9px; text-transform:uppercase; letter-spacing:.1em; font-weight:700; margin-bottom:7px; }
-  .hurr-circle.inn .hurr-clabel { color:var(--accent); }
-  .hurr-circle.out .hurr-clabel { color:var(--accent3); }
-  .hurr-citems { font-size:.74rem; line-height:1.75; color:var(--muted); }
-  .hurr-mid {
-    width:108px; height:108px; border-radius:50%;
-    background:linear-gradient(135deg,rgba(232,162,58,.22),rgba(126,200,164,.22));
-    border:2px dashed rgba(232,162,58,.7);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:8px; z-index:2; flex-shrink:0; margin:0 -54px;
-  }
-  .hurr-mlabel { font-family:'DM Mono',monospace; font-size:8px; text-transform:uppercase; letter-spacing:.07em; color:var(--accent2); font-weight:700; margin-bottom:3px; }
-  .hurr-mtext  { font-family:'Fraunces',serif; font-size:.68rem; font-weight:700; color:var(--text); line-height:1.4; }
-  .hurr-result { display:flex; flex-direction:column; align-items:center; margin-top:14px; gap:5px; }
-  .hurr-rarrow { font-size:18px; color:var(--muted); }
-  .hurr-rpills { display:flex; gap:7px; flex-wrap:wrap; justify-content:center; }
-  .hurr-pill   { background:var(--card); border:1px solid var(--border); border-radius:20px; padding:3px 13px; font-size:.77rem; color:var(--text); }
-  .hurr-pill.g { border-color:rgba(232,162,58,.4); color:var(--accent); }
-  .hurr-pill.gr{ border-color:rgba(126,200,164,.4); color:var(--accent3); }
-  .hurr-note   { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); margin-top:5px; text-align:center; }
-  @media(max-width:520px){
-    .hurr-circles { flex-direction:column; gap:0; }
-    .hurr-circle  { width:150px; height:150px; margin:0 !important; }
-    .hurr-circle.inn { margin-bottom:-24px !important; }
-    .hurr-circle.out { margin-top:-24px !important; }
-    .hurr-mid { width:96px; height:96px; margin:0 !important; z-index:3; }
-  }
-
   /* ── SLEEP TIMER ────────────────────────── */
   .sleep-opt-btn {
     background: var(--card); border: 1px solid var(--border);
@@ -923,12 +861,10 @@
 <!-- HERO -->
 <div class="hero">
   <div class="badge">🎙️ Lern-Podcast · Klausurvorbereitung</div>
-  <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent2);margin-bottom:8px;margin-top:6px;">📖 Modell: Hurrelmanns Sozialisationstheorie</div>
-  <h1>Klaus <span>Hurrelmanns</span><br><span style="font-size:0.72em;color:var(--accent2);">Sozialisationsmodell</span></h1>
+  <h1>Klaus <span>Hurrelmann</span><br>– Der Komplette Guide</h1>
   <p class="subtitle">Sozialisationstheorie, Entwicklungsaufgaben, Belastungs-Bewältigungs-Modell, Medien & Krisen – alles für deine Klausur.</p>
   <div class="meta-row">
-    <span><span class="dot"></span> Erklärstil: YouTube-Guide</span>
-    <span><span class="dot"></span> Modell: Hurrelmann 2020</span>
+    <span><span class="dot"></span> Host: Alex & Lena</span>
     <span><span class="dot"></span> 8 Kapitel</span>
     <span><span class="dot"></span> Klausur: Freitag</span>
   </div>
@@ -996,7 +932,6 @@
   </ul>
 </nav>
 
-<div id="podcastContent">
 <div id="ep1" style="background:linear-gradient(90deg,var(--accent),var(--accent2));padding:10px 24px;text-align:center;">
   <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.15em;color:#0f0e0b;font-weight:600;text-transform:uppercase;">▶ Folge 1 — Hurrelmann Komplett</span>
 </div>
@@ -1007,75 +942,67 @@
 <section class="chapter" id="c0">
   <div class="chapter-header">
     <span class="chapter-num">00</span>
-    <h2 class="chapter-title">Intro: <span class="em">Worum geht es?</span></h2>
+    <h2 class="chapter-title">Intro: Was euch heute erwartet</h2>
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Es ist Mittwoch, Freitag ist Klausur, und Hurrelmann ist noch nicht wirklich durchgesickert. Kein Problem — genau für diesen Moment ist dieser Guide gebaut. Keine zwei Moderatoren, die sich Bälle zuspielen, sondern ein echter Erklärweg, der Schritt für Schritt aufbaut. Erst das Fundament, dann die Konzepte, dann alles zusammen. Wenn du aufmerksam mitfolgst, kannst du heute und morgen alles aufholen, was du brauchst. Und am Freitag sitzt du entspannt in der Klausur — versprochen.</p>
+        <div class="name">Alex</div>
+        <p>Hallo und willkommen! Du hörst den Hurrelmann-Intensiv-Podcast – deinen Begleiter für die Klausur am Freitag. Ich bin Alex.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Und ich bin Lena. Heute gehen wir durch <span class="kw">alles</span>, was du über Klaus Hurrelmann wissen musst: sein Sozialisationsmodell, die vier Entwicklungsaufgaben, die zehn Prinzipien, das Belastungs-Bewältigungs-Modell – und am Ende sprechen wir über Medien und Krisen.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Also: Kopfhörer rein, Skript auf den Tisch – und los geht's. Wir starten mit der wichtigsten Frage: Was will Hurrelmann eigentlich mit seinem Modell erreichen?</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- KAPITEL 1 -->
+<!-- KAPITEL 1: WER IST HURRELMANN? -->
 <section class="chapter" id="c1">
   <div class="chapter-header">
     <span class="chapter-num">01</span>
-    <h2 class="chapter-title">Hurrelmann: <span class="em">Das Fundament</span></h2>
+    <h2 class="chapter-title">Wer ist Hurrelmann &amp; was will er <span class="em">erreichen?</span></h2>
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Fang mit einer Frage an: Was macht einen Menschen zu dem, was er ist? Die klassische Soziologie sagt: Die Gesellschaft formt ihn. Die Biologie sagt: seine Gene. Hurrelmann sagt beides stimmt — aber du bist nicht einfach Ergebnis dieser Kräfte. Du bist ein <span class="kw">produktiv realitätsverarbeitendes Subjekt</span>. Dieser Satz ist der Schlüssel zu allem. Lass ihn in drei Teile zerlegen.</p>
+        <div class="name">Alex</div>
+        <p>Klaus Hurrelmann ist einer der bedeutendsten deutschen Soziologen und Bildungsforscher. Sein zentrales Werk ist die <span class="kw">Sozialisationstheorie</span> – und die ist komplexer als sie zunächst klingt.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p><span class="kw2">Subjekt</span> bedeutet: Du bist aktiv. Du bist kein Objekt, das passiv von der Welt geformt wird. Du greifst ein, du gestaltest, du reagierst. <span class="kw2">Realitätsverarbeitend</span> bedeutet: Du verarbeitest ständig zwei Realitäten gleichzeitig. Die <span class="kw">innere Realität</span> — das sind Körper, Psyche, Gene, Emotionen, Triebe. Und die <span class="kw">äußere Realität</span> — das sind Familie, Schule, Peers, Medien, ökonomische Verhältnisse, Gesellschaft. <span class="kw2">Produktiv</span> bedeutet: Aus dieser Verarbeitung entsteht etwas. Deine Persönlichkeit. Deine Identität. Du produzierst dich selbst — aber nie im leeren Raum.</p>
+        <div class="name">Lena</div>
+        <p>Genau. Hurrelmanns Kernthese lautet: Menschen sind <span class="kw">„produktiv realitätsverarbeitende Subjekte"</span>. Was bedeutet das? Menschen sind keine passiven Wesen, die einfach von Gesellschaft und Umwelt geformt werden. Sie setzen sich aktiv mit ihrer Realität auseinander – sowohl mit der <span class="kw2">inneren Realität</span> (körperlich, psychisch) als auch mit der <span class="kw2">äußeren Realität</span> (sozial, kulturell, ökonomisch).</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Daraus folgt der wichtigste Gedanke: Es ist eine <span class="kw">Wechselwirkung</span>. Nicht die Gesellschaft formt dich einseitig. Und du allein formst auch nicht die Gesellschaft. Beides prägt beides. Das ist Hurrelmanns revolutionärer Gedanke. Und noch etwas: Diese Sozialisation endet nie. Das ist das <span class="kw2">Lebenslaufprinzip</span>. Kein Abschluss, kein Fertig — du entwickelst dich vom Säugling bis ins hohe Alter. Ziel: eine stabile <span class="kw">Ich-Identität</span> bilden und als handlungsfähige Person an der Gesellschaft teilnehmen.</p>
+        <div class="name">Alex</div>
+        <p>Das ist der revolutionäre Gedanke. Vor Hurrelmann hat man Sozialisation oft so verstanden: Die Gesellschaft formt das Individuum. Hurrelmann sagt: Ja, aber das Individuum formt auch die Gesellschaft mit. Es ist eine <span class="kw">Wechselwirkung</span>.</p>
       </div>
     </div>
-  </div>
-
-  <div class="hurr-wrap">
-    <div class="hurr-title">📊 Hurrelmanns Sozialisationsmodell</div>
-    <div class="hurr-sub">Der Mensch zwischen innerer und äußerer Realität</div>
-    <div class="hurr-circles">
-      <div class="hurr-circle inn">
-        <div class="hurr-clabel">Innere<br>Realität</div>
-        <div class="hurr-citems">Körper<br>Psyche<br>Gene<br>Emotionen<br>Triebe</div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Sein Ziel mit dem Modell: Er will erklären, wie Menschen sich von der Geburt an entwickeln, welche Aufgaben sie dabei lösen müssen, und warum manche dabei scheitern – und andere nicht. Er will <span class="kw">Entwicklung verstehbar machen</span>, damit Pädagogik, Politik und Gesellschaft besser helfen können.</p>
       </div>
-      <div class="hurr-mid">
-        <div class="hurr-mlabel">Soziali&shy;sation</div>
-        <div class="hurr-mtext">produktiv<br>realitäts&shy;ver&shy;arbei&shy;tendes<br>Subjekt</div>
-      </div>
-      <div class="hurr-circle out">
-        <div class="hurr-clabel">Äußere<br>Realität</div>
-        <div class="hurr-citems">Familie<br>Schule<br>Peers<br>Medien<br>Gesellschaft</div>
-      </div>
-    </div>
-    <div class="hurr-result">
-      <div class="hurr-rarrow">↓</div>
-      <div class="hurr-rpills">
-        <span class="hurr-pill g">Ich-Identität</span>
-        <span class="hurr-pill">Persönlichkeit</span>
-        <span class="hurr-pill gr">Gesundheit</span>
-        <span class="hurr-pill">Handlungsfähigkeit</span>
-      </div>
-      <div class="hurr-note">↺ Lebenslanger, wechselseitiger Prozess — Sozialisation endet nie</div>
     </div>
   </div>
 
@@ -1083,14 +1010,14 @@
     <div class="infobox-title">📌 Kerngedanke – merken!</div>
     <ul>
       <li>Mensch = <strong>produktiv realitätsverarbeitendes Subjekt</strong></li>
-      <li>Innere Realität (Körper, Psyche) ⟺ Äußere Realität (Gesellschaft, Kultur)</li>
-      <li>Sozialisation = <strong>lebenslanger</strong> Wechselwirkungsprozess</li>
-      <li>Ziel: Ich-Identität + Handlungsfähigkeit in der Gesellschaft</li>
+      <li>Innere Realität (Körper, Psyche) + Äußere Realität (Gesellschaft, Kultur) wirken zusammen</li>
+      <li>Sozialisation ist lebenslang – nicht nur in der Kindheit</li>
+      <li>Ziel: Identitätsentwicklung + Handlungsfähigkeit in der Gesellschaft</li>
     </ul>
   </div>
 </section>
 
-<!-- KAPITEL 2 -->
+<!-- KAPITEL 2: ENTWICKLUNGSAUFGABEN -->
 <section class="chapter" id="c2">
   <div class="chapter-header">
     <span class="chapter-num">02</span>
@@ -1098,69 +1025,76 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Stell dir einen 15-Jährigen vor. Er sitzt im Unterricht und soll sich auf Mathe konzentrieren. Gleichzeitig denkt er daran, ob seine Freunde ihn heute Abend dabeihaben wollen. Gleichzeitig verändert sich sein Körper durch die Pubertät. Gleichzeitig fragt er sich: Was will ich eigentlich später machen? Das ist kein Drama — das ist nach Hurrelmann der Normalzustand der Adoleszenz. Er nennt es die <span class="kw">Entwicklungsaufgaben</span>. Vier an der Zahl. Alle gleichzeitig. Für jeden.</p>
+        <div class="name">Alex</div>
+        <p>Okay, kommen wir zu einem der wichtigsten Konzepte für eure Klausur: die <span class="kw">Entwicklungsaufgaben</span>. Hurrelmann baut hier auf Robert Havighurst auf, macht das Konzept aber moderner und gesellschaftsbezogener.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Merke dir das Kürzel <span class="kw2">Q–B–K–P</span>. <span class="kw">Qualifizierung</span>: Du erwirbst schulische und berufliche Kompetenzen. Leitfrage: Was kann ich leisten, welchen Platz nehme ich in der Gesellschaft ein? <span class="kw">Bindung</span>: Du baust Beziehungen auf — Freundschaften, erste Liebe, Sexualität — und löst dich gleichzeitig von der Herkunftsfamilie ab. Leitfrage: Zu wem gehöre ich? <span class="kw">Konsum und Selbstständigkeit</span>: Du entwickelst deinen eigenen Lebensstil und strebst materielle Unabhängigkeit an. Leitfrage: Wie gestalte ich mein Leben? <span class="kw">Partizipation</span>: Du entwickelst gesellschaftliche und politische Haltungen, übernimmst Verantwortung, gestaltest mit. Leitfrage: Wie stehe ich zur Gesellschaft?</p>
+        <div class="name">Lena</div>
+        <p>Die Idee dahinter ist: Jeder Mensch – besonders in der <span class="kw">Adoleszenz</span> – steht vor bestimmten Aufgaben, die er lösen muss, um eine stabile Identität zu entwickeln. Diese Aufgaben stellt sowohl die Gesellschaft als auch die eigene biologische Entwicklung.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Das Entscheidende für die Klausur: Alle vier kommen gleichzeitig. Und dazu kommt die <span class="kw">Doppelanforderung der Adoleszenz</span> — von innen drängt die Pubertät, von außen drängen gesellschaftliche Erwartungen. Diese doppelte Last macht die Jugendphase so intensiv. Wer alle vier Aufgaben bewältigt, bildet eine stabile <span class="kw">Ich-Identität</span>. Das ist das Entwicklungsziel. Das ist auch der Grund, warum Scheitern hier so viele Konsequenzen hat.</p>
+        <div class="name">Alex</div>
+        <p>Hurrelmann beschreibt in seiner Theorie vier zentrale Entwicklungsaufgaben in der Jugendphase. Merkt euch das Akronym: <span class="kw">Q-B-K-P</span>.</p>
       </div>
     </div>
   </div>
 
-  <div style="margin:20px 0;background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;">
-    <div style="padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;">
-      <span style="font-family:'Fraunces',serif;font-weight:700;">Die 4 Entwicklungsaufgaben</span>
-      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.1em;">Q – B – K – P</span>
+  <div class="grid2">
+    <div class="mini-card">
+      <div class="mini-card-title">① Qualifizierung</div>
+      <p>Schul- und Berufsqualifikationen erwerben. Intellektuelle Kompetenzen entwickeln. Die Frage: <em>„Was kann ich leisten? Welchen Platz habe ich in der Gesellschaft?"</em></p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
-      <div style="padding:14px 16px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
-        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);font-weight:700;margin-bottom:5px;">① Qualifizierung</div>
-        <div style="font-size:.84rem;color:var(--muted);line-height:1.6;">Schule, Beruf, Kompetenzen.<br><em style="color:var(--text);">„Was kann ich leisten?"</em></div>
-      </div>
-      <div style="padding:14px 16px;border-bottom:1px solid var(--border);">
-        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent3);font-weight:700;margin-bottom:5px;">② Bindung</div>
-        <div style="font-size:.84rem;color:var(--muted);line-height:1.6;">Freundschaft, Liebe, Ablösung.<br><em style="color:var(--text);">„Zu wem gehöre ich?"</em></div>
-      </div>
-      <div style="padding:14px 16px;border-right:1px solid var(--border);">
-        <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);font-weight:700;margin-bottom:5px;">③ Konsum & Selbständigkeit</div>
-        <div style="font-size:.84rem;color:var(--muted);line-height:1.6;">Lebensstil, Unabhängigkeit.<br><em style="color:var(--text);">„Wie gestalte ich mein Leben?"</em></div>
-      </div>
-      <div style="padding:14px 16px;">
-        <div style="font-family:'DM Mono',monospace;font-size:11px;color:#c8a0d0;font-weight:700;margin-bottom:5px;">④ Partizipation</div>
-        <div style="font-size:.84rem;color:var(--muted);line-height:1.6;">Gesellschaft, Werte, Politik.<br><em style="color:var(--text);">„Wie stehe ich zur Gesellschaft?"</em></div>
+    <div class="mini-card">
+      <div class="mini-card-title">② Bindung</div>
+      <p>Freundschaften schließen, romantische Beziehungen eingehen, Sexualität entwickeln, Ablösung von der Herkunftsfamilie. Die Frage: <em>„Zu wem gehöre ich? Wen liebe ich?"</em></p>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-title">③ Konsum &amp; Selbstständigkeit</div>
+      <p>Eigenen Lebensstil und Konsumverhalten entwickeln, materielle Unabhängigkeit anstreben. Die Frage: <em>„Wie gestalte ich mein eigenes Leben?"</em></p>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-title">④ Partizipation</div>
+      <p>Politische und gesellschaftliche Beteiligung entwickeln, moralische und ethische Orientierungen ausbilden. Die Frage: <em>„Wie stehe ich zur Gesellschaft?"</em></p>
+    </div>
+  </div>
+
+  <div class="dialogue">
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Und das Wichtige: Diese vier Aufgaben müssen <span class="kw">gleichzeitig</span> bewältigt werden! Ein Jugendlicher sitzt in der Schule und muss Qualifikationen erwerben – gleichzeitig will er Freundschaften pflegen, seine Identität entwickeln, und vielleicht seinen ersten Job finden. Das erzeugt echten Druck.</p>
       </div>
     </div>
-    <div style="padding:10px 18px;border-top:1px solid var(--border);background:rgba(232,162,58,.05);">
-      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--accent);">⚠️ Alle vier gleichzeitig + Doppelanforderung von innen &amp; außen</span>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Genau. Hurrelmann nennt das auch die <span class="kw">„Doppelanforderung"</span> der Adoleszenz: von innen (Körper verändert sich, Pubertät) und von außen (gesellschaftliche Erwartungen) wird man gleichzeitig gefordert. Wer das schafft, entwickelt eine stabile <span class="kw2">Ich-Identität</span>.</p>
+      </div>
     </div>
   </div>
 
   <div class="infobox">
-    <div class="infobox-title">📌 Eselsbrücke Q–B–K–P</div>
+    <div class="infobox-title">📌 Eselsbrücke für die Klausur</div>
     <ul>
-      <li><strong>Q</strong>ualifizierung → Schule / Beruf / „Was kann ich leisten?"</li>
+      <li><strong>Q</strong>ualifizierung → Schule / Beruf / Leistung</li>
       <li><strong>B</strong>indung → Freundschaft / Liebe / Familie loslassen</li>
       <li><strong>K</strong>onsum → Lebensstil / Selbstständigkeit / Materialität</li>
       <li><strong>P</strong>artizipation → Gesellschaft / Werte / Politik</li>
-      <li>Alle vier <strong>gleichzeitig</strong> + Doppelanforderung von innen &amp; außen</li>
     </ul>
   </div>
 </section>
 
-<!-- KAPITEL 3 -->
+<!-- KAPITEL 3: 10 PRINZIPIEN -->
 <section class="chapter" id="c3">
   <div class="chapter-header">
     <span class="chapter-num">03</span>
@@ -1168,43 +1102,106 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Jetzt die zehn Prinzipien — das theoretische Fundament von Hurrelmanns Modell. Wichtig vorab: Es geht um die aktuellen <span class="kw">Prinzipien</span> aus den neueren Auflagen, nicht um die älteren Maxime. Hurrelmann hat sein Modell überarbeitet und präzisiert — die Prinzipien sind die gültige, aktuelle Version, die heute in der Wissenschaft verwendet wird. Was beschreiben sie? Die Spielregeln, nach denen Sozialisation funktioniert.</p>
+        <div class="name">Lena</div>
+        <p>Jetzt zu den zehn Prinzipien – das klingt viel, aber viele hängen zusammen. Stellt euch das als das theoretische Fundament vor, auf dem alles andere aufbaut.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p><span class="kw">Prinzip 1 – Subjektprinzip</span>: Der Mensch ist aktives Subjekt seiner Entwicklung, kein passives Objekt. Ich forme mich selbst. <span class="kw">Prinzip 2 – Aktivitätsprinzip</span>: Menschen handeln aus eigenem Antrieb — Handeln ist der Motor. <span class="kw">Prinzip 3 – Konstruktionsprinzip</span>: Realität wird aktiv konstruiert, nicht einfach aufgenommen. Jeder baut sein eigenes Weltbild. <span class="kw">Prinzip 4 – Doppelungsprinzip</span>: Sozialisation ist immer gleichzeitige Auseinandersetzung mit innerer und äußerer Realität. Das ist der Kern. <span class="kw">Prinzip 5 – Lebenslaufprinzip</span>: Sozialisation endet nie — vom Säugling bis ins hohe Alter.</p>
-      </div>
-    </div>
-    <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
-      <div class="speech">
-        <div class="name">Guide</div>
-        <p><span class="kw">Prinzip 6 – Interaktionsprinzip</span>: Entwicklung geschieht durch Interaktion mit anderen. Familie, Peers, Lehrer prägen uns durch wechselseitige Kommunikation. <span class="kw">Prinzip 7 – Institutionenprinzip</span>: Familie, Schule, Peers, Medien, Kirche sind Sozialisationsinstanzen — sie strukturieren, welche Entwicklungserfahrungen möglich sind. <span class="kw">Prinzip 8 – Biographieprinzip</span>: Frühere Erfahrungen prägen, wie aktuelle Situationen verarbeitet werden. Deine Geschichte prägt deine Gegenwart. <span class="kw">Prinzip 9 – Krisenregulationsprinzip</span>: Krisen sind normal und notwendig — entscheidend ist, wie sie bewältigt werden. <span class="kw">Prinzip 10 – Gesundheitsprinzip</span>: Gelungene Sozialisation zeigt sich in physischer und psychischer Gesundheit. Für die Klausur am wichtigsten: die Prinzipien eins, vier, neun und zehn.</p>
+        <div class="name">Alex</div>
+        <p>Ich lese sie vor, Lena erklärt sie kurz. Dabei merken wir uns: Die Prinzipien beschreiben, <span class="kw">wie Sozialisation funktioniert</span> – nach Hurrelmann.</p>
       </div>
     </div>
   </div>
 
   <div class="prinzip-list">
-    <div class="prinzip-item"><span class="prinzip-num" style="border-color:var(--accent);color:var(--accent);">01</span><div class="prinzip-content"><div class="prinzip-name" style="color:var(--accent);">Subjektprinzip ★ Klausur-Top</div><div class="prinzip-desc">Der Mensch ist aktives Subjekt seiner Entwicklung — kein passives Objekt. Er gestaltet seine Sozialisation mit. Merksatz: „Ich forme mich selbst."</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num">02</span><div class="prinzip-content"><div class="prinzip-name">Aktivitätsprinzip</div><div class="prinzip-desc">Menschen handeln eigeninitiativ und gehen aktiv auf ihre Umwelt zu. Handeln ist der Motor der Entwicklung.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num">03</span><div class="prinzip-content"><div class="prinzip-name">Konstruktionsprinzip</div><div class="prinzip-desc">Realität wird nicht einfach wahrgenommen — sie wird aktiv konstruiert. Jeder Mensch baut sein eigenes Weltbild. (Verwandt mit dem Konstruktivismus)</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num" style="border-color:var(--accent);color:var(--accent);">04</span><div class="prinzip-content"><div class="prinzip-name" style="color:var(--accent);">Doppelungsprinzip ★ Klausur-Top</div><div class="prinzip-desc">Sozialisation ist immer gleichzeitige Auseinandersetzung mit innerer (Körper, Psyche) und äußerer (Gesellschaft, Schule) Realität. Das ist der Kern des Modells.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num">05</span><div class="prinzip-content"><div class="prinzip-name">Lebenslaufprinzip</div><div class="prinzip-desc">Sozialisation endet nicht in der Kindheit. Sie ist ein lebenslanger Prozess — vom Säugling bis ins hohe Alter.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num">06</span><div class="prinzip-content"><div class="prinzip-name">Interaktionsprinzip</div><div class="prinzip-desc">Sozialisation geschieht in und durch Interaktion mit anderen. Familie, Freunde, Lehrer prägen uns durch wechselseitige Kommunikation.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num">07</span><div class="prinzip-content"><div class="prinzip-name">Institutionenprinzip</div><div class="prinzip-desc">Institutionen (Familie, Schule, Medien, Kirche, Peers) sind Sozialisationsinstanzen. Sie strukturieren, welche Entwicklungserfahrungen möglich sind.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num">08</span><div class="prinzip-content"><div class="prinzip-name">Biographieprinzip</div><div class="prinzip-desc">Jeder Mensch hat eine einzigartige Lebensgeschichte. Frühere Erfahrungen beeinflussen, wie aktuelle Situationen verarbeitet werden.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num" style="border-color:var(--accent);color:var(--accent);">09</span><div class="prinzip-content"><div class="prinzip-name" style="color:var(--accent);">Krisenregulationsprinzip ★ Klausur-Top</div><div class="prinzip-desc">Entwicklung verläuft nie reibungslos. Krisen sind normal und notwendig. Entscheidend ist, wie sie bewältigt werden — Anstoß oder Hemmung von Entwicklung.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num" style="border-color:var(--accent);color:var(--accent);">10</span><div class="prinzip-content"><div class="prinzip-name" style="color:var(--accent);">Gesundheitsprinzip ★ Klausur-Top</div><div class="prinzip-desc">Gelungene Sozialisation zeigt sich in physischer und psychischer Gesundheit. Wer Entwicklungsaufgaben gut bewältigt, entwickelt ein stabiles Selbst.</div></div></div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">01</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Subjektprinzip</div>
+        <div class="prinzip-desc">Der Mensch ist aktives Subjekt seiner eigenen Entwicklung – kein passives Objekt. Er gestaltet seine Sozialisation mit. Merksatz: „Ich forme mich selbst."</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">02</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Aktivitätsprinzip</div>
+        <div class="prinzip-desc">Menschen handeln eigeninitiativ. Sie reagieren nicht nur auf Umweltreize, sondern gehen aktiv auf ihre Umwelt zu. Handeln ist der Motor der Entwicklung.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">03</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Konstruktionsprinzip</div>
+        <div class="prinzip-desc">Realität wird nicht einfach wahrgenommen – sie wird aktiv konstruiert. Jeder Mensch baut sein eigenes Bild von der Welt. (Verwandt mit dem Konstruktivismus)</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">04</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Doppelungsprinzip</div>
+        <div class="prinzip-desc">Sozialisation ist immer eine Auseinandersetzung mit <em>zwei</em> Realitäten gleichzeitig: der inneren (Körper, Psyche, Gene) und der äußeren (Gesellschaft, Familie, Schule).</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">05</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Lebenslaufprinzip</div>
+        <div class="prinzip-desc">Sozialisation endet nicht in der Kindheit oder Jugend. Sie ist ein lebenslanger Prozess – vom Säugling bis ins hohe Alter.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">06</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Interaktionsprinzip</div>
+        <div class="prinzip-desc">Sozialisation geschieht in und durch Interaktion mit anderen Menschen. Familie, Freunde, Lehrer – alle prägen uns durch wechselseitige Kommunikation.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">07</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Institutionenprinzip</div>
+        <div class="prinzip-desc">Institutionen (Familie, Schule, Medien, Kirche, Peers) sind zentrale Sozialisationsinstanzen. Sie strukturieren, welche Entwicklungserfahrungen möglich sind.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">08</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Biographieprinzip</div>
+        <div class="prinzip-desc">Jeder Mensch hat eine einzigartige Lebensgeschichte. Frühere Erfahrungen beeinflussen, wie aktuelle Situationen verarbeitet werden. Geschichte prägt Gegenwart.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">09</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Krisenregulationsprinzip</div>
+        <div class="prinzip-desc">Entwicklung verläuft nie reibungslos. Krisen sind normal und notwendig. Entscheidend ist, wie Krisen bewältigt werden – sie können Entwicklung anstoßen oder hemmen.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num">10</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Gesundheitsprinzip</div>
+        <div class="prinzip-desc">Gelungene Sozialisation zeigt sich in physischer und psychischer Gesundheit. Wer Entwicklungsaufgaben gut bewältigt, entwickelt ein stabiles Selbst – und bleibt gesund.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialogue">
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Für die Klausur gilt: Ihr müsst die Prinzipien nicht alle auswendig kennen. Wichtiger ist, dass ihr <span class="kw">3–4 Prinzipien erklären</span> und auf einen Text anwenden könnt. Besonders relevant sind: Subjektprinzip, Doppelungsprinzip, Krisenregulationsprinzip und Gesundheitsprinzip.</p>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- KAPITEL 4 -->
+<!-- KAPITEL 4: BELASTUNGS-BEWÄLTIGUNGS-MODELL -->
 <section class="chapter" id="c4">
   <div class="chapter-header">
     <span class="chapter-num">04</span>
@@ -1212,55 +1209,89 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Was passiert konkret, wenn die Entwicklungsaufgaben echten Druck erzeugen? Dafür hat Hurrelmann sein Belastungs-Bewältigungs-Modell entwickelt. Jeder Mensch ist ständig mit Anforderungen konfrontiert — von zwei Seiten gleichzeitig. <span class="kw">Innere Belastungen</span>: Körperliche Veränderungen, emotionaler Druck, psychische Anforderungen. <span class="kw">Äußere Belastungen</span>: Schulanforderungen, familiäre Konflikte, sozialer Vergleichsdruck, gesellschaftliche Erwartungen, materielle Not. Erkennst du das Muster? Das ist das <span class="kw2">Doppelungsprinzip</span> — Prinzip vier — in Aktion.</p>
+        <div class="name">Alex</div>
+        <p>Kommen wir zu einem der prüfungsrelvantesten Konzepte: dem Belastungs-Bewältigungs-Modell. Das ist quasi der Mechanismus, der erklärt, was passiert, wenn die Entwicklungsaufgaben Druck machen.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Jetzt die Kernfrage: Gelingt dem Menschen die <span class="kw">Bewältigung</span> — oder nicht? Wenn ja: stabile Ich-Identität, psychische und körperliche Gesundheit, gesellschaftliche Teilhabe. Wenn nein: Symptome, psychosomatische Beschwerden, Verhaltensauffälligkeiten, im schlimmsten Fall Delinquenz oder Sucht. Was entscheidet? Die <span class="kw">Ressourcen</span>. Soziale Unterstützung durch Familie und Freunde. Selbstwirksamkeitsgefühl — das Gefühl, dass das eigene Handeln etwas bewirkt. Materielle Sicherheit. Vorbilder. Medienkompetenz. Wer viele Ressourcen hat, bewältigt leichter. Wer wenige hat — durch Armut, fehlende Unterstützung, instabile Verhältnisse — ist deutlich gefährdeter. Darin liegt die soziale Ungleichheit von Entwicklung.</p>
+        <div class="name">Lena</div>
+        <p>Stellt euch das so vor: Ein Jugendlicher ist ständig mit Anforderungen konfrontiert. Diese kommen aus zwei Richtungen: von innen – also aus seinem Körper, seiner Psyche, seinen Emotionen. Und von außen – aus Schule, Familie, Gesellschaft, Medien.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Hurrelmann nennt das <span class="kw">Belastungen</span>. Und jetzt kommt der entscheidende Punkt: Wie reagiert der Mensch darauf? Gelingt es ihm, diese Belastungen zu <span class="kw">bewältigen</span>? Oder nicht?</p>
       </div>
     </div>
   </div>
 
   <div class="schema">
-    <div class="schema-title">Belastungs-Bewältigungs-Modell: Der Mechanismus</div>
+    <div class="schema-title">Modell-Übersicht: Belastung → Bewältigung → Ergebnis</div>
     <div class="schema-flow">
       <div class="schema-box a">Innere Belastungen<br><small>Körper, Psyche, Emotionen</small></div>
       <span class="schema-arrow">+</span>
       <div class="schema-box a">Äußere Belastungen<br><small>Schule, Familie, Gesellschaft</small></div>
       <span class="schema-arrow">→</span>
-      <div class="schema-box">Bewältigungs&shy;versuche<br><small>(aktive Verarbeitung)</small></div>
+      <div class="schema-box">Bewältigungsversuche<br><small>(aktive Verarbeitung)</small></div>
       <span class="schema-arrow">→</span>
-      <div class="schema-box b">Erfolgreich:<br><small>Gesundheit, Identität</small></div>
+      <div class="schema-box b">Erfolgreich:<br><small>Gesundheit, Identität, Wohlbefinden</small></div>
     </div>
-    <div style="margin-top:10px;">
+    <div style="margin-top: 10px;">
+      <div class="schema-flow">
+        <div style="width: 100%; border-top: 1px dashed #444; margin: 4px 0;"></div>
+      </div>
       <div class="schema-flow" style="margin-top:8px;">
-        <div class="schema-box" style="opacity:.45;">Innere + Äußere Belastungen</div>
+        <div class="schema-box" style="opacity:0.4;">Innere + Äußere Belastungen</div>
         <span class="schema-arrow">→</span>
-        <div class="schema-box" style="opacity:.45;">Bewältigung scheitert</div>
+        <div class="schema-box" style="opacity:0.4;">Bewältigungsversuche scheitern</div>
         <span class="schema-arrow">→</span>
-        <div class="schema-box c">Nicht erfolgreich:<br><small>Symptome, Delinquenz</small></div>
+        <div class="schema-box c">Nicht erfolgreich:<br><small>Symptome, Delinquenz, Krankheit</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dialogue">
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Das Schöne an diesem Modell: Es erklärt, warum zwei Jugendliche in einer ähnlichen Situation so unterschiedlich reagieren können. Der eine bewältigt die Belastung – und wird stärker davon. Der andere scheitert – und entwickelt möglicherweise psychosomatische Symptome, Verhaltensauffälligkeiten oder sogar Delinquenz.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Das hängt von den <span class="kw">Ressourcen</span> ab, die jemand mitbringt: soziale Unterstützung, Selbstwirksamkeit, materielle Sicherheit, Vorbilder. Wer viele Ressourcen hat, bewältigt leichter. Wer wenige hat – etwa durch Armut oder mangelnde familiäre Unterstützung – ist gefährdeter.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Hurrelmann verbindet damit auch das Thema <span class="kw">Gesundheit</span>: Psychische und körperliche Gesundheit sind für ihn kein Zufallsprodukt, sondern das Ergebnis gelungener oder missglückter Bewältigungsprozesse. Das ist sein <span class="kw2">10. Prinzip</span> – das Gesundheitsprinzip – in Aktion.</p>
       </div>
     </div>
   </div>
 
   <div class="infobox">
-    <div class="infobox-title">📌 Bewältigungsstrategien</div>
+    <div class="infobox-title">📌 Bewältigungsstrategien – was gibt es?</div>
     <ul>
-      <li><strong>Problemorientiert:</strong> Das Problem direkt angehen — lernen, Hilfe suchen, planen</li>
-      <li><strong>Emotionsorientiert:</strong> Mit eigenen Gefühlen umgehen — Sport, Gespräch, Reflexion</li>
-      <li><strong>Soziale Unterstützung:</strong> Freunde, Familie, Beratungsstellen</li>
-      <li><strong>Dysfunktional:</strong> Rückzug, Aggression, Suchtmittel — kurzfristig entlastend, langfristig schädlich</li>
+      <li><strong>Problemorientierte Bewältigung:</strong> Das Problem direkt angehen, z.B. lernen, Hilfe suchen</li>
+      <li><strong>Emotionsorientierte Bewältigung:</strong> Mit den eigenen Gefühlen umgehen, z.B. Sport, Gespräche</li>
+      <li><strong>Soziale Unterstützung suchen:</strong> Freunde, Familie, Beratung</li>
+      <li><strong>Dysfunktionale Bewältigung:</strong> Rückzug, Aggression, Suchtmittel – kurzfristig entlastend, langfristig schädlich</li>
     </ul>
   </div>
 </section>
 
-<!-- KAPITEL 5 -->
+<!-- KAPITEL 5: KRISEN -->
 <section class="chapter" id="c5">
   <div class="chapter-header">
     <span class="chapter-num">05</span>
@@ -1268,26 +1299,55 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Hurrelmanns Haltung zu Krisen ist klar: Sie sind nicht schlimm — sie sind unvermeidlich. Und sie können Entwicklung überhaupt erst anstoßen. Das ist das <span class="kw">Krisenregulationsprinzip</span>, Prinzip neun. Wer eine Krise gut bewältigt, wächst daran. Wer sie nicht bewältigt, bleibt stecken. Hurrelmann unterscheidet zwei Typen. <span class="kw">Normative Krisen</span> sind vorhersehbar: Pubertät, Schulwechsel, erster Liebeskummer, Ablösung von den Eltern, Berufseinstieg. Sie kommen einfach, weil du dich entwickelst — jeder erlebt sie, sie haben entwicklungsförderndes Potenzial, wenn sie gut begleitet werden. <span class="kw">Nicht-normative Krisen</span> sind unvorhersehbar: Tod eines Elternteils, Scheidung, Mobbing, Flucht, schwere Erkrankung, Armut, Unfälle. Sie überfordern das Bewältigungssystem stärker, weil sie nicht eingeplant waren. Pädagogik hat hier eine klare Aufgabe: nicht Krisen vermeiden, sondern sie begleiten.</p>
+        <div class="name">Alex</div>
+        <p>Kommen wir zum Thema <span class="kw">Krisen</span>. Das klingt dramatisch – ist aber bei Hurrelmann etwas ganz Normales.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Genau. Hurrelmann unterscheidet zwei Arten von Krisen, das ist wichtig: <span class="kw">Normative Krisen</span> und <span class="kw">Nicht-normative Krisen</span>.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Normative Krisen sind vorhersehbare Entwicklungskrisen – sie kommen einfach, weil man sich entwickelt. Schulwechsel, Pubertät, erster Liebeskummer, Berufsstart. Das erlebt jeder. Sie sind Teil des normalen Lebenslaufs und haben entwicklungsförderndes Potenzial.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Nicht-normative Krisen hingegen sind unvorhersehbar: Tod eines Elternteils, Scheidung, schwere Krankheit, Mobbing, Fluchterfahrungen. Diese Krisen überfordern das Bewältigungssystem stärker – weil sie nicht „eingeplant" waren.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Das <span class="kw">Krisenregulationsprinzip</span> – Prinzip 9 – sagt: Krisen sind notwendig. Wer sie bewältigt, wächst daran. Wer sie nicht bewältigt, bleibt in der Entwicklung stecken oder entwickelt Symptome. Pädagogik hat also die Aufgabe, Krisen zu begleiten – nicht zu vermeiden!</p>
       </div>
     </div>
   </div>
+
   <div class="grid2">
-    <div class="mini-card" style="border-left:3px solid var(--accent3);">
-      <div class="mini-card-title" style="color:var(--accent3);">Normative Krisen (erwartet)</div>
+    <div class="mini-card" style="border-left: 3px solid var(--accent3);">
+      <div class="mini-card-title" style="color: var(--accent3);">Normative Krisen (erwartet)</div>
       <p>Pubertät · Schulwechsel · Erste Liebe · Ablösung von Eltern · Berufseinstieg · Partnerwahl</p>
     </div>
-    <div class="mini-card" style="border-left:3px solid #e06c6c;">
-      <div class="mini-card-title" style="color:#e06c6c;">Nicht-normative Krisen (unerwartet)</div>
+    <div class="mini-card" style="border-left: 3px solid #e06c6c;">
+      <div class="mini-card-title" style="color: #e06c6c;">Nicht-normative Krisen (unerwartett)</div>
       <p>Scheidung · Trauerfall · Mobbing · Flucht · Chronische Erkrankung · Armut · Unfälle</p>
     </div>
   </div>
 </section>
 
-<!-- KAPITEL 6 -->
+<!-- KAPITEL 6: MEDIEN -->
 <section class="chapter" id="c6">
   <div class="chapter-header">
     <span class="chapter-num">06</span>
@@ -1295,94 +1355,160 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Hurrelmann hat Medien früh als zentrale <span class="kw">Sozialisationsinstanz</span> erkannt — das Institutionenprinzip, Prinzip sieben. Heute sind Medien möglicherweise die einflussreichste Institution im Leben von Jugendlichen, weil sie jederzeit und überall präsent sind. Medien sind Teil der <span class="kw">äußeren Realität</span>. Sie können Entwicklungsaufgaben unterstützen: Identitätserkundung, Partizipation, Wissensaneignung, soziale Vernetzung. Aber sie können sie auch belasten: Vergleichsdruck, Cybermobbing, Desinformation, Suchtpotenzial. Medien sind also gleichzeitig <span class="kw">Ressource und Belastung</span>.</p>
+        <div class="name">Lena</div>
+        <p>Jetzt verbinden wir Hurrelmanns Theorie mit dem Medienthema. Das ist die Brücke, die eure Klausur von euch verlangt – besonders in Aufgabe 3.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Der zentrale Gedanke aus Hurrelmanns Perspektive: Wie du als <span class="kw">Subjekt</span> mit Medien umgehst, entscheidet darüber, was sie mit dir machen. Wer Medien aktiv, kritisch und kompetent nutzt, macht sie zur Ressource. Wer passiv konsumiert ohne Medienkompetenz, ist den Belastungen ausgeliefert. Das ist das <span class="kw2">Subjektprinzip</span> in Reinform. Und genau deshalb ist Medienpädagogik heute so wichtig. Nicht Medien verbieten — Kompetenzen aufbauen.</p>
+        <div class="name">Alex</div>
+        <p>Für Hurrelmann sind Medien eine zentrale <span class="kw">Sozialisationsinstanz</span> – das 7. Prinzip, das Institutionenprinzip, erinnert ihr euch? Neben Familie und Schule sind Medien heute vielleicht sogar die wirkungsmächtigste Institution, die Jugendliche prägt.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Stefan Aufenanger betont, dass <span class="kw">Medienkompetenz</span> eine eigene Entwicklungsaufgabe geworden ist. Kinder und Jugendliche müssen lernen, Medien kritisch zu nutzen – das ist heute so wichtig wie Lesen und Schreiben lernen.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Schropp und andere Medienpädagogen weisen außerdem auf die Rolle von <span class="kw">Medienscouts</span> hin – Schüler, die andere Schüler in Medienkompetenz schulen. Das ist partizipativ und knüpft direkt an Hurrelmanns Partizipationsaufgabe an.</p>
       </div>
     </div>
   </div>
+
   <div class="grid2">
     <div class="infobox green" style="margin:0">
       <div class="infobox-title">✅ Chancen von Medien</div>
       <ul>
-        <li>Informationszugang &amp; Wissensaneignung</li>
-        <li>Soziale Teilhabe &amp; Vernetzung</li>
+        <li>Informationszugang & Wissensaneignung</li>
+        <li>Soziale Teilhabe & Vernetzung</li>
         <li>Identitätsexperimente in sicheren Räumen</li>
-        <li>Kreativität &amp; Selbstausdruck (YouTube, TikTok)</li>
-        <li>Politische Partizipation &amp; Aktivismus</li>
+        <li>Kreativität & Selbstausdruck (YouTube, TikTok)</li>
+        <li>Politische Partizipation & Aktivismus</li>
+        <li>Aufarbeitung von Krisen (Support-Communities)</li>
+        <li>Förderung von Medienkompetenz (Medienscouts)</li>
       </ul>
     </div>
     <div class="infobox red" style="margin:0">
       <div class="infobox-title">⚠️ Gefahren von Medien</div>
       <ul>
-        <li>Vergleichsdruck &amp; verzerrtes Körperbild</li>
-        <li>Cybermobbing &amp; soziale Ausgrenzung</li>
-        <li>Desinformation &amp; Fake News</li>
-        <li>Suchtpotenzial &amp; exzessive Nutzung</li>
-        <li>Soziale Isolation &amp; Realitätsverlust</li>
+        <li>Cybermobbing & digitale Gewalt</li>
+        <li>Mediensucht & Kontrollverlust</li>
+        <li>Körperbild-Verzerrung (Filterblase, Schönheitsideale)</li>
+        <li>Desinformation & Manipulation</li>
+        <li>Datenschutzverletzungen</li>
+        <li>Sozialer Druck durch permanente Erreichbarkeit</li>
+        <li>Eskalation von Krisen in sozialen Netzwerken</li>
       </ul>
     </div>
   </div>
+
+  <div class="dialogue" style="margin-top: 24px;">
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Wie wirken Medien auf die <span class="kw">Persönlichkeit</span>? Hurrelmann würde sagen: Sie sind Teil der äußeren Realität, die aktiv verarbeitet werden muss. Medieninhalte können Entwicklungsaufgaben erleichtern – zum Beispiel bieten Social-Media-Plattformen Räume zur Identitätskonstruktion. Aber sie können sie auch erschweren.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Ein konkretes Beispiel: Jugendliche nutzen Instagram zur <span class="kw2">Identitätserkundung</span> – sie testen Rollen, Stile, Meinungen. Das ist positiv, solange sie die Fähigkeit haben, Medien kritisch zu reflektieren. Wenn nicht, kann permanenter Vergleich mit idealisierten Körperbildern das Selbstbild massiv schädigen – eine nicht-normative Krise im Sinne Hurrelmanns.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Aufenanger formuliert vier Dimensionen von Medienkompetenz: <span class="kw">Medienkunde</span> (Wissen über Medien), <span class="kw">Mediennutzung</span> (kompetente Nutzung), <span class="kw">Medienkritik</span> (reflektierter Umgang) und <span class="kw">Mediengestaltung</span> (kreative Produktion). Alle vier sind nötig, um Medien für die eigene Entwicklung produktiv zu nutzen.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="infobox">
+    <div class="infobox-title">🔗 Verbindung zu Hurrelmann</div>
+    <ul>
+      <li><strong>Institutionenprinzip:</strong> Medien sind Sozialisationsinstanz neben Familie und Schule</li>
+      <li><strong>Entwicklungsaufgabe Bindung:</strong> Social Media als Ort sozialer Beziehungen</li>
+      <li><strong>Entwicklungsaufgabe Partizipation:</strong> Medien ermöglichen politische Teilhabe</li>
+      <li><strong>Belastungs-Bewältigungs-Modell:</strong> Cybermobbing als Belastung; Medienkompetenz als Bewältigungsressource</li>
+      <li><strong>Krisenregulation:</strong> Medien können Krisen verstärken oder Unterstützung bieten</li>
+    </ul>
+  </div>
 </section>
 
-<!-- KAPITEL 7 -->
+<!-- KAPITEL 7: KLAUSUR-TIPPS -->
 <section class="chapter" id="c7">
   <div class="chapter-header">
     <span class="chapter-num">07</span>
     <h2 class="chapter-title">Klausur-Tipps: <span class="em">So gehst du vor</span></h2>
   </div>
-  <div class="dialogue">
-    <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
-      <div class="speech">
-        <div class="name">Guide</div>
-        <p>Drei Aufgaben, drei klare Strategien. <span class="kw">Aufgabe 1 — Textwiedergabe</span>: Zweimal lesen, zweites Mal markieren. Hauptgedanke in einem Satz: Der Text handelt von… Dann Struktur und Argumente in eigenen Worten, keine Zitate. Beschreibe die Argumentationsstruktur: These, Belege, Schluss. Vollständigkeit zählt. <span class="kw">Aufgabe 2 — Theorie und Analyse</span>: Hurrelmanns Theorie kurz darstellen — Entwicklungsaufgaben, Belastungsmodell, relevante Prinzipien. Analysekriterien ableiten. Am Text anwenden, zitieren. Klares Fazit.</p>
-      </div>
-    </div>
-    <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
-      <div class="speech">
-        <div class="name">Guide</div>
-        <p><span class="kw">Aufgabe 3 — Medien und Hurrelmann</span>: Das ist die Verbindungsaufgabe. Verbinde das Belastungsmodell direkt mit dem Medienthema. Medien sind Belastung und gleichzeitig Ressource. Medienkompetenz nach Aufenanger ist die Bewältigungsressource. Medienscouts sind ein praktisches Förderinstrument. Das ist dein vollständiger Argumentationsgang. Und hier der wichtigste Tipp: Schreib dir heute Abend zwei Absätze über Hurrelmann auf Papier — Entwicklungsaufgaben, Belastungsmodell, drei Prinzipien. Das ist deine fertige Vorlage für Aufgabe 2 und 3. Dieser Text passt auf fast jeden Klausurtext, den du bekommen könntest.</p>
-      </div>
-    </div>
-  </div>
+
   <div class="klausur-box">
     <h3>📝 Aufgabe 1 – Textwiedergabe</h3>
     <ol>
       <li>Lies den Text zweimal – beim zweiten Mal markieren.</li>
-      <li>Schreibe den <strong>Hauptgedanken in einem Satz</strong>: „Der Text handelt von…"</li>
-      <li>Gib zentrale Aussagen in eigenen Worten wieder – <strong>keine Zitate!</strong></li>
-      <li>Beschreibe die <strong>Argumentationsstruktur</strong>: These – Belege – Schluss?</li>
-      <li>Vollständigkeit zählt.</li>
+      <li>Schreibe den <strong>Hauptgedanken in einem Satz</strong>: „Der Text handelt von..."</li>
+      <li>Gib dann die zentralen Aussagen in eigenen Worten wieder – <strong>keine Zitate!</strong></li>
+      <li>Halte das <strong>Tempus</strong> aus dem Text bei (Präsens → Präsens).</li>
+      <li>Beschreibe auch die <strong>Argumentationsstruktur</strong>: Wie baut der Autor seinen Gedankengang auf? (These – Belege – Schluss?)</li>
+      <li>Gib möglichst viele Aussagen wieder – vollständigkeit zählt.</li>
     </ol>
   </div>
+
   <div class="klausur-box">
     <h3>📝 Aufgabe 2 – Theorie + Analyse</h3>
     <ol>
-      <li><strong>Theorie darstellen:</strong> Entwicklungsaufgaben, Belastungs-Bewältigungs-Modell, relevante Prinzipien.</li>
-      <li><strong>Kriterien ableiten:</strong> 2–3 konkrete Analysekriterien.</li>
-      <li><strong>Analyse:</strong> Kriterien auf den Text anwenden. Zitieren!</li>
-      <li><strong>Fazit:</strong> Zusammenfassung mit Schlussfolgerung.</li>
+      <li><strong>Theorie darstellen</strong> (verkürzt!): Wähle geeignete Aspekte – Entwicklungsaufgaben, Belastungs-Bewältigungs-Modell, relevante Prinzipien. Begründe, warum du diese gewählt hast.</li>
+      <li><strong>Kriterien ableiten</strong>: Was genau wirst du im Text analysieren? Formuliere 2–3 Analysekriterien aus der Theorie.</li>
+      <li><strong>Analyse</strong>: Wende die Kriterien auf den Text an. <em>Zitiere!</em> „Hurrelmann (JAHR, S.XX) betont, dass..."</li>
+      <li><strong>Fazit</strong>: Was kannst du zusammenfassend schlussfolgern?</li>
     </ol>
   </div>
+
   <div class="klausur-box">
     <h3>📝 Aufgabe 3 – Medien + Hurrelmann</h3>
     <ol>
-      <li><strong>Leitfrage herausarbeiten:</strong> Chancen? Risiken? Medienkompetenz? Identität?</li>
-      <li><strong>Medientheorie darstellen:</strong> Aufenanger (Medienkompetenz), Schropp (Medienscouts).</li>
-      <li><strong>Mit Hurrelmann verbinden:</strong> Entwicklungsaufgaben? Belastungsmodell? Prinzipien?</li>
+      <li><strong>Leitfrage herausarbeiten:</strong> Was genau wird gefragt? Wo liegt der Schwerpunkt – Chancen? Risiken? Medienkompetenz? Persönlichkeitsentwicklung?</li>
+      <li><strong>Medientheorie darstellen:</strong> Aufenanger (Medienkompetenz), Schropp (Medienscouts), allg. Chancen & Risiken.</li>
+      <li><strong>Mit Hurrelmann verbinden:</strong> Welche Entwicklungsaufgaben, welches Prinzip, welcher Teil des Belastungsmodells ist relevant?</li>
       <li><strong>Zitieren</strong> und belegen.</li>
-      <li><strong>Fazit mit pädagogischer Konsequenz.</strong></li>
+      <li><strong>Fazit:</strong> Klares Statement mit pädagogischer Konsequenz.</li>
     </ol>
+  </div>
+
+  <div class="dialogue">
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Ein letzter Tipp: Schreibt euch zu Hause eine Muster-Kurzdarstellung von Hurrelmanns Theorie – zwei Absätze. Entwicklungsaufgaben, Belastungs-Bewältigungs-Modell, drei Prinzipien. Dann habt ihr eine fertige Vorlage im Kopf, die ihr für Aufgabe 2 und 3 anpassen könnt.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Genauso. Und denkt daran: Hurrelmann ist kein Gegner – er ist euer Werkzeug. Wenn ihr einen Text habt, fragt immer: Welche Entwicklungsaufgabe ist hier betroffen? Welche Belastung? Wird sie bewältigt? Das Modell passt auf fast alles.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Das war euer Hurrelmann-Intensiv-Podcast. Viel Erfolg am Freitag – ihr habt das! 🎓</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1390,12 +1516,12 @@
 
 <!-- FOLGE 2 BANNER -->
 <div id="ep2" style="background:linear-gradient(90deg,var(--accent3),#2a9a6a);padding:10px 24px;text-align:center;margin-top:32px;">
-  <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.15em;color:#0f0e0b;font-weight:600;text-transform:uppercase;">▶ Folge 2 — Aufenanger, Schropp &amp; Medien</span>
+  <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.15em;color:#0f0e0b;font-weight:600;text-transform:uppercase;">▶ Folge 2 — Aufenanger, Schropp & Medien</span>
 </div>
 
 <div class="container">
 
-<!-- E0: INTRO -->
+<!-- E0: INTRO FOLGE 2 -->
 <section class="chapter" id="e0">
   <div class="chapter-header">
     <span class="chapter-num" style="background:rgba(126,200,164,0.15);border-color:rgba(126,200,164,0.3);color:var(--accent3);">F2·00</span>
@@ -1403,10 +1529,24 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Hurrelmanns Theorie sitzt jetzt. Folge zwei baut darauf auf und verbindet alles mit dem Medienthema — durch zwei Autoren, die du für die Klausur kennst: <span class="kw">Stefan Aufenanger</span> und den <span class="kw">Medienscouts-Ansatz</span> nach Schropp. Der rote Faden heute: Medien sind nicht gut oder schlecht. Die entscheidende Frage ist immer, was der Mensch damit macht — und was sie mit ihm machen. Das klingt vertraut. Richtig — das ist Hurrelmann pur.</p>
+        <div class="name">Alex</div>
+        <p>Willkommen zurück! Das hier ist Folge 2 unseres Hurrelmann-Podcasts. Wir haben Hurrelmanns Theorie jetzt im Kopf – und jetzt geht es darum, sie mit dem Medienthema zu verbinden.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Genau. Heute sprechen wir über zwei wichtige Autoren, die ihr für eure Klausur kennen müsst: <span class="kw">Stefan Aufenanger</span> und den Ansatz rund um <span class="kw">Schropp und die Medienscouts</span>. Und wir zeigen, wie das alles mit Hurrelmann zusammenhängt.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Der rote Faden heute: Medien sind nicht einfach gut oder schlecht. Die entscheidende Frage ist: Was macht der Mensch damit – und was macht es mit ihm? Das klingt bekannt, oder? Das ist Hurrelmann pur.</p>
       </div>
     </div>
   </div>
@@ -1420,45 +1560,88 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Stefan Aufenanger ist einer der bedeutendsten deutschen Medienpädagogen. Er baut auf Dieter Baackes Medienkompetenz-Modell auf und entwickelt es weiter. Seine Kernthese: <span class="kw">Medienkompetenz</span> ist keine optionale Zusatzqualifikation — sie ist eine Schlüsselkompetenz des 21. Jahrhunderts, so grundlegend wie Lesen und Schreiben. Das Entscheidende: Sie entsteht nicht automatisch durch viel Medienkonsum. Ein Kind, das täglich fünf Stunden TikTok schaut, ist nicht automatisch medienkompetent. Medienkompetenz muss aktiv erworben und gefördert werden.</p>
+        <div class="name">Lena</div>
+        <p>Stefan Aufenanger ist einer der zentralen deutschen Medienpädagogen. Sein Kernthema: Kinder und Jugendliche brauchen <span class="kw">Medienkompetenz</span> – und zwar als echte Schlüsselkompetenz für das Leben in der modernen Gesellschaft, nicht als optionales Extra.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Aufenanger beschreibt vier Dimensionen, die zusammenwirken müssen. <span class="kw">Medienkritik</span>: Inhalte analytisch hinterfragen, Perspektiven erkennen, ethisch urteilen. Erkenne ich, dass dieses Video bezahlte Werbung ist? <span class="kw">Medienkunde</span>: Wissen über Mediensysteme, Strukturen und Algorithmen — informativ — plus technische Bedienkompetenz — instrumentell. <span class="kw">Mediennutzung</span>: Medien kompetent nutzen, sowohl rezeptiv als Konsument als auch aktiv als Produzent. <span class="kw">Mediengestaltung</span>: Medien kreativ einsetzen, eigene Inhalte schaffen, Formen weiterentwickeln. Keine dieser vier Dimensionen reicht allein — alle vier müssen zusammenwirken.</p>
-      </div>
-    </div>
-    <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
-      <div class="speech">
-        <div class="name">Guide</div>
-        <p>Verbindung zu Hurrelmann, die du für die Klausur unbedingt kennst: Aufenangers Medienkompetenz ist eine <span class="kw">Bewältigungsressource</span> im Sinne des Belastungs-Bewältigungs-Modells. Wer medienkompetent ist, kann die Belastungen der digitalen Welt verarbeiten: Cybermobbing, Vergleichsdruck, Desinformation. Wer keine Medienkompetenz hat, ist diesen Belastungen schutzlos ausgeliefert. Außerdem bestätigt Aufenanger das <span class="kw2">Institutionenprinzip</span>: Schule und Familie müssen Medienkompetenz aktiv fördern. Sie entsteht nicht von selbst.</p>
+        <div class="name">Alex</div>
+        <p>Aufenanger baut auf Dieter Baackes Medienkompetenz-Modell auf und entwickelt es weiter. Die Grundidee: Medienkompetenz ist keine einzelne Fähigkeit, sondern besteht aus <span class="kw">vier Dimensionen</span>, die zusammenwirken müssen.</p>
       </div>
     </div>
   </div>
+
   <div class="prinzip-list">
-    <div class="prinzip-item"><span class="prinzip-num" style="color:var(--accent3);">01</span><div class="prinzip-content"><div class="prinzip-name">Medienkritik</div><div class="prinzip-desc">Medieninhalte analytisch hinterfragen, reflexiv über eigene Mediennutzung nachdenken, ethisch urteilen. Werbung erkennen, Perspektiven in Nachrichten einordnen.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num" style="color:var(--accent3);">02</span><div class="prinzip-content"><div class="prinzip-name">Medienkunde</div><div class="prinzip-desc">Wissen über Mediensysteme und -strukturen (informativ) + technische Bedienkompetenz (instrumentell). Wie funktionieren Algorithmen? Wie werden Nachrichten produziert?</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num" style="color:var(--accent3);">03</span><div class="prinzip-content"><div class="prinzip-name">Mediennutzung</div><div class="prinzip-desc">Medien rezeptiv und kompetent nutzen (anwendend) sowie aktiv und interaktiv mit Medien arbeiten (anbietend). Sowohl konsumieren als auch produzieren.</div></div></div>
-    <div class="prinzip-item"><span class="prinzip-num" style="color:var(--accent3);">04</span><div class="prinzip-content"><div class="prinzip-name">Mediengestaltung</div><div class="prinzip-desc">Medien innovativ und kreativ gestalten, bestehende Formen weiterentwickeln. Eigene Erklärvideos, Blogs, Podcasts produzieren.</div></div></div>
+    <div class="prinzip-item">
+      <span class="prinzip-num" style="color:var(--accent3);">01</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Medienkritik</div>
+        <div class="prinzip-desc">Medieninhalte analytisch hinterfragen, reflexiv über eigene Mediennutzung nachdenken, ethisch urteilen können. Beispiel: Erkennen, dass ein YouTube-Video bezahlte Werbung enthält oder dass Nachrichten eine bestimmte Perspektive einnehmen.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num" style="color:var(--accent3);">02</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Medienkunde</div>
+        <div class="prinzip-desc">Wissen über Mediensysteme, -arten und -strukturen (informativ) + technische Bedienkompetenzen (instrumentell-qualifikatorisch). Beispiel: Verstehen, wie Social-Media-Algorithmen funktionieren.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num" style="color:var(--accent3);">03</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Mediennutzung</div>
+        <div class="prinzip-desc">Medien rezeptiv und kompetent nutzen (anwendend) sowie aktiv und interaktiv mit Medien arbeiten (anbietend). Beispiel: Einen Podcast hören UND selbst Inhalte produzieren.</div>
+      </div>
+    </div>
+    <div class="prinzip-item">
+      <span class="prinzip-num" style="color:var(--accent3);">04</span>
+      <div class="prinzip-content">
+        <div class="prinzip-name">Mediengestaltung</div>
+        <div class="prinzip-desc">Medien innovativ und kreativ gestalten, bestehende Formen weiterentwickeln. Beispiel: Ein eigenes Erklär-Video drehen, einen Blog führen, Medien als Ausdrucksmittel nutzen.</div>
+      </div>
+    </div>
   </div>
+
+  <div class="dialogue">
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Aufenanger betont: Medienkompetenz kann und muss <span class="kw">aktiv gefördert</span> werden – durch Schule, Familie und gesellschaftliche Institutionen. Sie entsteht nicht automatisch dadurch, dass Kinder viel Zeit mit Medien verbringen. Viel Nutzung bedeutet noch keine Kompetenz.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Und jetzt die Verbindung zu Hurrelmann: Aufenangers Medienkompetenz ist nichts anderes als eine <span class="kw">Bewältigungsressource</span> im Sinne von Hurrelmanns Belastungs-Bewältigungs-Modell. Wer medienkompetent ist, hat eine Ressource, um die Belastungen der Mediengesellschaft zu bewältigen. Wer sie nicht hat, ist gefährdeter.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Außerdem passt Aufenangers Ansatz zum <span class="kw">Institutionenprinzip</span> – Prinzip 7. Medien sind eine Sozialisationsinstanz. Aufenanger fragt: Wie können wir diese Instanz so gestalten, dass sie Entwicklung fördert statt hemmt? Das ist eine pädagogische Antwort auf Hurrelmanns Diagnose.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="infobox green">
     <div class="infobox-title">📌 Aufenanger – Klausur-Essentials</div>
     <ul>
       <li>4 Dimensionen: Medienkritik · Medienkunde · Mediennutzung · Mediengestaltung</li>
-      <li>Medienkompetenz ≠ viel Mediennutzung — muss aktiv erworben werden</li>
-      <li>Verbindung Hurrelmann: <strong>Medienkompetenz als Bewältigungsressource</strong></li>
-      <li>Institutionenprinzip (7): Schule &amp; Familie müssen aktiv fördern</li>
+      <li>Medienkompetenz ≠ viel Mediennutzung – sie muss bewusst erworben werden</li>
+      <li>Schule und Familie als Förderorte von Medienkompetenz</li>
+      <li>Verbindung zu Hurrelmann: Medienkompetenz als Bewältigungsressource</li>
     </ul>
   </div>
 </section>
 
-<!-- E2: SCHROPP -->
+<!-- E2: SCHROPP / MEDIENSCOUTS -->
 <section class="chapter" id="e2">
   <div class="chapter-header">
     <span class="chapter-num" style="background:rgba(126,200,164,0.15);border-color:rgba(126,200,164,0.3);color:var(--accent3);">F2·02</span>
@@ -1466,37 +1649,71 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Ein konkreter Praxisansatz: die <span class="kw">Medienscouts NRW</span>. Das Prinzip ist so einfach wie klug: Nicht Erwachsene erklären Jugendlichen, wie Medien funktionieren — <span class="kw2">Jugendliche erklären es einander</span>. Schülerinnen und Schüler werden zu Medienscouts ausgebildet und begleiten dann ihre Mitschüler bei Medienthemen: Cybermobbing, Datenschutz, Social Media, Fake News, Suchtpotenzial. Das nennt man <span class="kw">Peer-Education</span>. Der entscheidende Vorteil: Jugendliche akzeptieren Informationen von Gleichaltrigen deutlich besser als von Lehrern oder Eltern — höhere Glaubwürdigkeit, höhere Wirksamkeit.</p>
+        <div class="name">Alex</div>
+        <p>Kommen wir zu einem sehr konkreten medienpädagogischen Ansatz: den <span class="kw">Medienscouts</span>. Das Programm – bekannt vor allem durch das <span class="kw">Medienscouts NRW</span>-Projekt – verfolgt einen radikal anderen Ansatz als klassische Medienpädagogik von oben.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Verbindung zu Hurrelmann — und die ist stark: Ein Medienscout erfüllt die Entwicklungsaufgabe <span class="kw">Partizipation</span>. Er beteiligt sich aktiv an der Schulgemeinschaft, übernimmt Verantwortung, gestaltet gesellschaftliche Strukturen mit. Das ist gelebte Partizipationsaufgabe. Und das <span class="kw2">Subjektprinzip</span> lebt hier auf: Der Medienscout ist nicht passives Objekt der Medienerziehung, sondern aktives Subjekt, das andere mitgestaltet. Hurrelmann würde sagen: Das ist gelingende Sozialisation in Aktion.</p>
+        <div class="name">Lena</div>
+        <p>Die Grundidee: Nicht Erwachsene erklären Jugendlichen, wie sie Medien nutzen sollen – sondern <span class="kw">Jugendliche erklären es einander</span>. Schülerinnen und Schüler werden zu Medienscouts ausgebildet und begleiten dann ihre Mitschüler bei Medienthemen.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Das nennt man <span class="kw">Peer-Education</span> oder Peer-to-Peer-Ansatz. Der entscheidende Vorteil: Jugendliche akzeptieren Botschaften von Gleichaltrigen deutlich besser als von Lehrern oder Eltern. Das erhöht die Wirksamkeit erheblich.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Medienscouts arbeiten zu Themen wie: Cybermobbing, Datenschutz, kritischer Umgang mit Social Media, Fake News, Suchtpotenzial digitaler Medien – also genau den Bereichen, die Jugendliche heute wirklich beschäftigen.</p>
       </div>
     </div>
   </div>
+
   <div class="grid2">
     <div class="mini-card" style="border-left:3px solid var(--accent3);">
-      <div class="mini-card-title" style="color:var(--accent3);">Stärken</div>
-      <p>Hohe Glaubwürdigkeit · Praxisnähe · Eigenverantwortung · fördert Partizipation · Multiplikatoreffekt</p>
+      <div class="mini-card-title" style="color:var(--accent3);">Stärken des Ansatzes</div>
+      <p>Hohe Glaubwürdigkeit unter Peers · Praxisnähe · Eigenverantwortung · fördert Partizipation · nachhaltig durch Multiplikatoren-Effekt</p>
     </div>
     <div class="mini-card" style="border-left:3px solid #e06c6c;">
-      <div class="mini-card-title" style="color:#e06c6c;">Grenzen</div>
-      <p>Abhängig von engagierten Schülerinnen · braucht pädagogische Begleitung · erreicht nicht alle · Wissen muss aktuell gehalten werden</p>
+      <div class="mini-card-title" style="color:#e06c6c;">Grenzen des Ansatzes</div>
+      <p>Abhängig von engagierten Schülerinnen · erfordert pädagogische Begleitung · kann nicht alle Schüler erreichen · Wissen der Scouts muss aktuell gehalten werden</p>
     </div>
   </div>
+
+  <div class="dialogue">
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Die Verbindung zu Hurrelmann ist hier besonders stark. Erinnert ihr euch an die <span class="kw">Entwicklungsaufgabe Partizipation</span>? Genau das ist ein Medienscout: Er oder sie beteiligt sich aktiv an der Gesellschaft, übernimmt Verantwortung, gestaltet seine schulische Gemeinschaft mit.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Und das <span class="kw">Subjektprinzip</span> lebt hier auf: Der Medienscout ist nicht passives Objekt der Medienerziehung, sondern aktives Subjekt, das andere mitgestaltet. Hurrelmann würde sagen: Das ist gelingende Sozialisation in Aktion.</p>
+      </div>
+    </div>
+  </div>
+
   <div class="infobox green">
-    <div class="infobox-title">📌 Medienscouts – Klausur-Essentials</div>
+    <div class="infobox-title">📌 Schropp / Medienscouts – Klausur-Essentials</div>
     <ul>
       <li>Peer-Education: Jugendliche schulen Jugendliche in Medienkompetenz</li>
       <li>Themen: Cybermobbing, Datenschutz, Social Media, Fake News</li>
-      <li>Verbindung Hurrelmann: <strong>Partizipationsaufgabe + Subjektprinzip</strong></li>
-      <li>Medienkompetenz als kollektive, nicht nur individuelle Ressource</li>
+      <li>Vorteil: Höhere Akzeptanz durch Gleichaltrige als durch Erwachsene</li>
+      <li>Verbindung Hurrelmann: Partizipationsaufgabe + Subjektprinzip</li>
+      <li>Medienkompetenz als kollektive statt nur individuelle Ressource</li>
     </ul>
   </div>
 </section>
@@ -1509,35 +1726,62 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Die große Synthese: Wie wirken Medien konkret auf die Persönlichkeitsentwicklung? Soziale Medien bieten Jugendlichen <span class="kw">Identitätslabore</span> — sie können verschiedene Rollen ausprobieren, Reaktionen testen, sich präsentieren. Das ist entwicklungspsychologisch wertvoll, solange es reflektiert geschieht. Die Kehrseite: Der permanente Vergleich mit idealisierten Körperbildern auf Instagram oder TikTok kann das Selbstbild massiv belasten. Das ist eine klassische <span class="kw2">nicht-normative Belastung</span> im Sinne Hurrelmanns — unvorhersehbar, chronisch, schwer greifbar.</p>
+        <div class="name">Lena</div>
+        <p>Jetzt die große Synthese: Wie wirken Medien konkret auf die Persönlichkeitsentwicklung? Hurrelmann würde sagen: Medien sind Teil der <span class="kw">äußeren Realität</span>, die jeder Mensch aktiv verarbeiten muss. Sie sind Sozialisationsinstanz – aber eine besonders mächtige, weil sie jederzeit und überall verfügbar sind.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Cybermobbing als Sonderfall — den musst du für die Klausur kennen: Es ist gleichzeitig eine <span class="kw">äußere Belastung</span> — andauernde Angriffe durch Peers — und trifft die <span class="kw">innere Realität</span> direkt: Selbstwert, psychische Stabilität, Identität. Das ist ein Paradebeispiel für das <span class="kw2">Doppelungsprinzip</span> in Aktion. Wer Medienkompetenz hat, kann damit umgehen. Wer sie nicht hat, kann psychosomatische Symptome, soziale Isolation oder gesteigertes Risikoverhalten entwickeln. Das Belastungs-Bewältigungs-Modell lässt sich hier direkt anwenden.</p>
+        <div class="name">Alex</div>
+        <p>Ein zentraler Punkt: Soziale Medien bieten Jugendlichen <span class="kw">Identitätslabore</span>. Sie können verschiedene Rollen ausprobieren, Reaktionen testen, sich präsentieren. Das ist entwicklungspsychologisch wertvoll – solange es reflektiert geschieht.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Aber es gibt eine Kehrseite: Der <span class="kw">permanente Vergleich</span> mit idealisierten Körperbildern und Lebensentwürfen auf Instagram oder TikTok kann das Selbstbild massiv belasten. Das ist eine klassische <span class="kw2">nicht-normative Belastung</span> im Sinne Hurrelmanns – unvorhersehbar, chronisch, schwer zu greifen.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Wer Medienkompetenz hat – also Aufenangers vier Dimensionen beherrscht – kann damit umgehen. Wer sie nicht hat, entwickelt möglicherweise Symptome: Suchtverhalten, verzerrtes Körperbild, sozialer Rückzug. Das Belastungs-Bewältigungs-Modell lässt sich direkt anwenden.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Besonders relevant für die Klausur: Cybermobbing als Sonderfall. Es ist gleichzeitig <span class="kw">eine äußere Belastung</span> (andauernde Angriffe durch Peers), trifft aber die <span class="kw">innere Realität</span> (Selbstwert, psychische Stabilität) direkt. Es ist ein Paradebeispiel für Hurrelmanns Doppelungsmodell – und kann zur echten Entwicklungskrise werden.</p>
       </div>
     </div>
   </div>
+
   <div class="schema">
-    <div class="schema-title">Medien im Hurrelmann-Modell – Synthese</div>
+    <div class="schema-title">Synthese: Medien im Hurrelmann-Modell</div>
     <div class="schema-flow" style="flex-direction:column;gap:12px;align-items:stretch;">
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
-        <div class="schema-box a" style="flex:1;">Medien als Belastung<br><small>Cybermobbing · Vergleichsdruck · Fake News</small></div>
+        <div class="schema-box a" style="flex:1;">Medien als äußere Belastung<br><small>Cybermobbing · Vergleichsdruck · Desinformation · Suchtpotenzial</small></div>
         <span class="schema-arrow">+</span>
-        <div class="schema-box b" style="flex:1;">Medien als Ressource<br><small>Vernetzung · Identitätslabor · Partizipation</small></div>
+        <div class="schema-box a" style="flex:1;">Medien als äußere Ressource<br><small>Vernetzung · Identitätslabor · Wissen · Partizipation</small></div>
       </div>
       <div style="text-align:center;color:var(--muted);font-size:20px;">↓</div>
       <div class="schema-box" style="text-align:center;">Bewältigung durch Medienkompetenz (Aufenanger)<br><small>Medienkritik · Medienkunde · Mediennutzung · Mediengestaltung</small></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <div class="schema-box b" style="flex:1;text-align:center;">Gelingende Entwicklung<br><small>Stabile Identität · Partizipation · Gesundheit</small></div>
+        <span class="schema-arrow" style="font-size:14px;">vs.</span>
+        <div class="schema-box c" style="flex:1;text-align:center;">Misslingende Entwicklung<br><small>Sucht · Isolation · Identitätsdiffusion</small></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- E4: FAZIT -->
+<!-- E4: FAZIT FOLGE 2 -->
 <section class="chapter" id="e4">
   <div class="chapter-header">
     <span class="chapter-num" style="background:rgba(126,200,164,0.15);border-color:rgba(126,200,164,0.3);color:var(--accent3);">F2·04</span>
@@ -1545,34 +1789,51 @@
   </div>
   <div class="dialogue">
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-a">A</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Jetzt kommt alles zusammen. <span class="kw">Hurrelmann</span> erklärt, wie Menschen sich entwickeln und welche Aufgaben sie dabei bewältigen müssen. <span class="kw">Aufenanger</span> zeigt, welche Kompetenzen nötig sind, um Medien als Teil dieser Entwicklung zu meistern. Die <span class="kw">Medienscouts</span> zeigen, wie das in der Schule praktisch umgesetzt wird. Das ist dein vollständiger Argumentationsgang für Aufgabe drei. Ein Muster-Fazit das du dir einprägen kannst: Medien sind in der heutigen Gesellschaft eine zentrale Sozialisationsinstanz, die Entwicklungsaufgaben sowohl unterstützen als auch gefährden kann. Entscheidend ist daher die Förderung von Medienkompetenz als Bewältigungsressource — individuell und strukturell durch Konzepte wie die Medienscouts.</p>
+        <div class="name">Alex</div>
+        <p>Okay, let's bring it all together. Der große rote Faden eurer Klausur ist dieser: Hurrelmann erklärt, wie Menschen sich entwickeln und welche Aufgaben sie dabei bewältigen müssen. Aufenanger zeigt, welche Kompetenzen nötig sind, um Medien als Teil dieser Entwicklung zu meistern. Und die Medienscouts zeigen, wie das in der Schule praktisch umgesetzt werden kann.</p>
       </div>
     </div>
     <div class="turn">
-      <div class="speaker-tag speaker-a">▶</div>
+      <div class="speaker-tag speaker-b">L</div>
       <div class="speech">
-        <div class="name">Guide</div>
-        <p>Letzter Tipp: Denke immer vom Modell her. Wenn du einen Klausurtext hast, frag dich: Welche Entwicklungsaufgabe ist betroffen? Welche Belastung liegt vor — normativ oder nicht-normativ? Wird sie bewältigt? Welches Prinzip passt? Hurrelmann ist nicht der Gegner — er ist dein Werkzeug. Jeder Klausurtext passt irgendwie in dieses Modell. Du hast jetzt alles, was du brauchst. Viel Erfolg am Freitag!</p>
+        <div class="name">Lena</div>
+        <p>Für Aufgabe 3 gilt: Verbindet Hurrelmanns Belastungs-Bewältigungs-Modell direkt mit dem Medienthema. Medien sind Belastung UND Ressource. Medienkompetenz nach Aufenanger ist die Bewältigungsressource. Medienscouts sind ein praktisches Förderinstrument. Das ist ein vollständiger Argumentationsgang.</p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-a">A</div>
+      <div class="speech">
+        <div class="name">Alex</div>
+        <p>Ein Muster-Fazit für eure Klausur könnte so klingen: <span class="kw">„Medien sind in der heutigen Gesellschaft eine zentrale Sozialisationsinstanz, die Entwicklungsaufgaben sowohl unterstützen als auch gefährden kann. Entscheidend ist daher die Förderung von Medienkompetenz als Bewältigungsressource – sowohl individuell als auch strukturell durch Konzepte wie die Medienscouts."</span></p>
+      </div>
+    </div>
+    <div class="turn">
+      <div class="speaker-tag speaker-b">L</div>
+      <div class="speech">
+        <div class="name">Lena</div>
+        <p>Das war Folge 2. Ihr habt jetzt alles, was ihr braucht. Schlaft gut, esst vor der Klausur, und denkt daran: Hurrelmann ist kein Feind – er ist das Werkzeug, mit dem ihr jeden Text analysieren könnt. Viel Erfolg! 🎓</p>
       </div>
     </div>
   </div>
+
   <div class="klausur-box">
-    <h3>🔗 Ultimative Verknüpfungstabelle</h3>
+    <h3>🔗 Die ultimative Verknüpfungstabelle</h3>
     <ol>
       <li><strong>Hurrelmann + Aufenanger:</strong> Medienkompetenz = Bewältigungsressource im Belastungs-Bewältigungs-Modell</li>
       <li><strong>Hurrelmann + Medienscouts:</strong> Peer-Education realisiert Partizipationsaufgabe + Subjektprinzip</li>
-      <li><strong>Cybermobbing:</strong> Nicht-normative Krise → Doppelungsmodell → misslingende Bewältigung → Symptome/Delinquenz</li>
-      <li><strong>Social Media + Identität:</strong> Medien als Identitätslabor = Unterstützung der Bindungs- und Partizipationsaufgabe</li>
-      <li><strong>Institutionenprinzip (7):</strong> Schule, Familie UND Medien = Sozialisationsinstanzen → Aufenanger fordert aktive Förderung</li>
+      <li><strong>Cybermobbing:</strong> Nicht-normative Krise → Doppelungsmodell → misslingende Bewältigung → Delinquenz/Symptome</li>
+      <li><strong>Social Media + Identität:</strong> Medien als Ort der Bindungs- und Identitätsarbeit (Entwicklungsaufgabe 2)</li>
+      <li><strong>Institutionenprinzip:</strong> Schule, Familie UND Medien = Sozialisationsinstanzen → Aufenanger fordert aktive Förderung in allen dreien</li>
     </ol>
   </div>
 </section>
 
 </div>
-
+<!-- ═══════════════════════════════════════════════════════
+     TRANSCRIPT PANEL (slide-in from right)
+════════════════════════════════════════════════════════ -->
 <div id="transcriptPanel" style="position:fixed;top:0;right:0;width:min(420px,100vw);height:100vh;z-index:7000;background:var(--surface);border-left:1px solid var(--border);box-shadow:-8px 0 32px rgba(0,0,0,0.4);display:flex;flex-direction:column;transform:translateX(100%);transition:transform 0.3s cubic-bezier(.4,0,.2,1);">
   <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
     <div>
@@ -1674,8 +1935,6 @@
 </div>
 
 <!-- SEARCH OVERLAY -->
-</div><!-- /podcastContent -->
-
 <div id="searchOverlay" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(10,9,7,0.92);backdrop-filter:blur(8px);padding:60px 24px 24px;overflow-y:auto;" onclick="closeSearchOutside(event)">
   <div style="max-width:680px;margin:0 auto;">
     <div style="display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:12px 18px;margin-bottom:20px;">
@@ -2287,12 +2546,9 @@ body.touch-device .fc-front { display: flex; }
 </style>
 
 <!-- API KEY SETUP OVERLAY -->
-<div class="setup-overlay" id="setupOverlay" style="display:none;overflow-y:auto;align-items:flex-start;padding-top:40px;padding-bottom:120px;">
+<div class="setup-overlay" id="setupOverlay" style="overflow-y:auto; align-items:flex-start; padding-top:40px; padding-bottom:120px;">
   <div class="setup-card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;">
-      <h2 style="margin:0;">🎙️ API-Keys einrichten</h2>
-      <button onclick="closeSetup()" title="Schließen" style="background:none;border:1px solid var(--border);color:var(--muted);font-size:18px;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">×</button>
-    </div>
+    <h2>🎙️ API-Keys einrichten</h2>
     <p>Konfiguriere die API-Keys für Audio-Wiedergabe und KI-Funktionen. Alle Keys werden nur lokal in deinem Browser gespeichert.</p>
 
     <!-- ── ELEVENLABS MULTI-KEY ── -->
@@ -2448,7 +2704,6 @@ body.touch-device .fc-front { display: flex; }
       </div>
     </div>
     <div class="pc-utils">
-      <button class="btn-ctrl btn-active" id="hlBtn" onclick="toggleWordHighlight()" title="Wort-Highlighting ein/aus">💡</button>
       <button class="btn-ctrl" onclick="openSearch()" title="Suchen (Ctrl+K)">🔍</button>
       <button class="btn-ctrl" id="sleepBtn" onclick="openSleepTimer()" title="Sleep-Timer">⏱</button>
       <button class="btn-ctrl" id="autoScrollBtn" onclick="toggleAutoScroll()" title="Auto-Scroll ein/aus">📌</button>
@@ -2477,13 +2732,21 @@ body.touch-device .fc-front { display: flex; }
 })();
 
 // ── VOICES ──────────────────────────────────────────────
-const VOICE_NARRATOR = 'onwK4e9ZLuTAKqWW03F9'; // Daniel – calm, warm narrator
-const MODEL          = 'eleven_multilingual_v2';
-const VOICE_ALEX = VOICE_NARRATOR; // legacy alias
-const VOICE_LENA = VOICE_NARRATOR; // legacy alias
+const VOICE_ALEX = 'onwK4e9ZLuTAKqWW03F9'; // Daniel – deep male
+const VOICE_LENA = 'XB0fDUnXU5powFXDhCwa'; // Charlotte – warm female
+const MODEL      = 'eleven_multilingual_v2';
 
 // ── COLLECT TURNS ────────────────────────────────────────
-const turns = []; // populated by _refreshTurns()
+const turns = [];
+document.querySelectorAll('.turn').forEach(turn => {
+  const isA = turn.querySelector('.speaker-a') !== null;
+  const nameEl = turn.querySelector('.name');
+  let text = '';
+  turn.querySelectorAll('.speech p').forEach(p => text += p.innerText + ' ');
+  const chapter = turn.closest('.chapter');
+  const chapterTitle = chapter ? chapter.querySelector('.chapter-title')?.innerText.replace(/\n/g,' ') : '';
+  turns.push({ el: turn, speaker: nameEl?.innerText || (isA ? 'Alex' : 'Lena'), isA, text: text.trim(), chapter: chapterTitle });
+});
 
 // ── INDEXEDDB PERSISTENT CACHE ───────────────────────────
 const DB_NAME = 'hurrelmann_podcast_v1';
@@ -2517,23 +2780,11 @@ async function dbSet(key, val) {
 
 // Session-level URL cache (data URLs on Safari, blob URLs elsewhere)
 const urlCache = {};
-function clearUrlCache() {
-  // Revoke all blob URLs and clear the in-memory cache
-  Object.entries(urlCache).forEach(([k, url]) => {
-    if (url && url.startsWith('blob:')) { try { URL.revokeObjectURL(url); } catch(e){} }
-    delete urlCache[k];
-  });
-}
 const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-
-// Cache namespace — change this whenever the spoken text changes significantly.
-// Old audio under old namespaces stays in IndexedDB but is never read.
-// Format: ns_<version>_<content-id>
-let CACHE_NS = 'ns_v3_narrator'; // changes when topic switches
 
 async function getAudioURL(idx) {
   if (urlCache[idx]) return urlCache[idx];
-  const blob = await dbGet(`${CACHE_NS}_${idx}`);
+  const blob = await dbGet(`turn_${idx}`);
   if (!blob || !(blob instanceof Blob) || blob.size === 0) return null;
 
   let url;
@@ -2557,7 +2808,7 @@ async function updateCacheStatus() {
   if (!db) await openDB();
   let count = 0;
   for (let i = 0; i < turns.length; i++) {
-    const b = await dbGet(`${CACHE_NS}_${i}`);
+    const b = await dbGet(`turn_${i}`);
     if (b) count++;
   }
   const el = document.getElementById('cacheStatus');
@@ -2696,6 +2947,10 @@ function updateSavedKeyUI() {
   updateAnthropicKeyUI();
 }
 
+// Legacy stubs so old call-sites don't crash
+function confirmKey() { addElevenLabsKey(); }
+function deleteKey()  { if (elKeys.length) deleteElKey(0); }
+function copyKey()    {}  // no longer needed with multi-key list
 
 function updateAnthropicKeyUI() {
   const storedA = localStorage.getItem(ANTHROPIC_KEY_LS);
@@ -2802,13 +3057,6 @@ document.getElementById('anthropicKeyInput').addEventListener('keydown', e => { 
 
 // On load: restore keys + check cache
 loadElKeys();
-// Apply saved topic style and collect turns before DB init
-(function() {
-  var savedId = localStorage.getItem(ACTIVE_TOPIC_KEY) || 'hurrelmann';
-  _applyTopicStyle(savedId);
-  _refreshTurns();
-})();
-
 openDB().then(async () => {
   await updateCacheStatus();
   if (elKeys.length > 0) {
@@ -2821,7 +3069,7 @@ openDB().then(async () => {
   // Check if ALL turns are cached → no key needed
   let allCached = true;
   for (let i = 0; i < turns.length; i++) {
-    const b = await dbGet(`${CACHE_NS}_${i}`);
+    const b = await dbGet(`turn_${i}`);
     if (!b) { allCached = false; break; }
   }
   if (allCached) {
@@ -2843,7 +3091,7 @@ async function fetchAudio(idx) {
   if (elKeys.length === 0) throw new Error('no-key');
 
   const turn   = turns[idx];
-  const voiceId = VOICE_NARRATOR; // always single narrator voice
+  const voiceId = turn.isA ? VOICE_ALEX : VOICE_LENA;
 
   // 3. Try keys in order until one succeeds or all are exhausted
   while (elKeyIdx < elKeys.length) {
@@ -2856,7 +3104,7 @@ async function fetchAudio(idx) {
         body: JSON.stringify({
           text: turn.text,
           model_id: MODEL,
-          voice_settings: { stability: 0.55, similarity_boost: 0.75, style: 0.08, use_speaker_boost: true }
+          voice_settings: { stability: 0.48, similarity_boost: 0.78, style: 0.15, use_speaker_boost: true }
         })
       });
     } catch(networkErr) {
@@ -2866,7 +3114,7 @@ async function fetchAudio(idx) {
     if (res.ok) {
       // Success — cache and return
       const blob = await res.blob();
-      await dbSet(`${CACHE_NS}_${idx}`, blob);
+      await dbSet(`turn_${idx}`, blob);
       // Use data URL on Safari, blob URL elsewhere
       let url;
       if (_isSafari) {
@@ -3145,13 +3393,6 @@ document.querySelectorAll('.turn').forEach((turn, idx) => {
 
 // ── AUTO-SCROLL STATE (declared early, used in updateUI) ──
 let autoScrollEnabled = true;
-
-// ── WORD HIGHLIGHT STATE ─────────────────────────────
-let wordHighlightEnabled = true;
-(function() {
-  try { const s = localStorage.getItem('hurrelmann_wordhl');
-        if (s !== null) wordHighlightEnabled = (s === '1'); } catch(e){}
-})();
 function jumpToCurrent() {
   const active = document.querySelector('.turn.speaking');
   if (active) {
@@ -3190,20 +3431,10 @@ function toggleTheme() {
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
 }
 // Restore saved theme
-// Theme: default is dark; only switch to light if user explicitly chose it
-(function() {
-  const t = localStorage.getItem('theme');
-  if (t === 'light') {
-    document.body.classList.add('light');
-    const btn = document.getElementById('themeBtn');
-    if (btn) btn.textContent = '🌙 Dark';
-  } else {
-    // Ensure dark mode is explicit (removes any stale .light class)
-    document.body.classList.remove('light');
-    const btn = document.getElementById('themeBtn');
-    if (btn) btn.textContent = '☀️ Light';
-  }
-})()
+if (localStorage.getItem('theme') === 'light') {
+  document.body.classList.add('light');
+  document.getElementById('themeBtn').textContent = '🌙 Dark';
+}
 
 window.addEventListener('beforeunload', () => { if (currentAudio) currentAudio.pause(); });
 
@@ -3892,7 +4123,6 @@ function _clearWordHighlight() {
 }
 
 function _startElevenLabsHighlight(audio, idx) {
-  if (!wordHighlightEnabled) return;
   _clearWordHighlight();
   _wrapTurnWords(idx);
   if (!_hlWords.length) return;
@@ -3903,26 +4133,33 @@ function _startElevenLabsHighlight(audio, idx) {
     if (!audio || audio.paused || audio.ended) { _clearWordHighlight(); return; }
     const dur = audio.duration;
     if (!dur || isNaN(dur)) return;
+
     const frac = audio.currentTime / dur;
+
+    // Find current word
     let wi = _hlWords.findIndex(w => frac >= w.startFrac && frac < w.endFrac);
-    if (wi === -1) wi = frac >= 1 ? _hlWords.length - 1 : -1;
+    if (wi === -1) {
+      // Past last word or before first
+      wi = frac >= 1 ? _hlWords.length - 1 : -1;
+    }
 
     if (wi !== lastWordIdx) {
+      // Remove old
       if (lastWordIdx >= 0 && lastWordIdx < _hlWords.length) {
         const el = document.getElementById(_hlWords[lastWordIdx].id);
         if (el) el.classList.remove('active');
       }
+      // Add new
       if (wi >= 0 && wi < _hlWords.length) {
         const el = document.getElementById(_hlWords[wi].id);
         if (el) el.classList.add('active');
       }
       lastWordIdx = wi;
     }
-  }, 50);
+  }, 50); // poll every 50ms — smooth enough, lightweight
 }
 
 function _startFallbackHighlight(utter, idx) {
-  if (!wordHighlightEnabled) return;
   _clearWordHighlight();
   _wrapTurnWords(idx);
   if (!_hlWords.length) return;
@@ -4940,33 +5177,12 @@ const PODCAST_REGISTRY = [
     id: 'hurrelmann',
     name: 'Hurrelmann – Sozialisationstheorie',
     desc: 'Folge 1 & 2: Kerntheorie, 10 Prinzipien, Medienkompetenz, Medienscouts',
-    cardCount: null,
-    builtin: true,
-    cacheNs: 'ns_v3_narrator'
-  },
-  {
-    id: 'hurrelmann-dialog',
-    name: 'Hurrelmann – Dialog-Format (Archiv)',
-    desc: 'Gleiche Inhalte, selbe Stimme – separater Audio-Cache. Für Vergleich oder falls du den anderen Cache löschen willst.',
-    cardCount: 42,
-    builtin: true,
-    legacy: true,
-    cacheNs: 'ns_v1_dialog'
-  },
-  // Future entries:
+    cardCount: null, // filled from FC_CARDS at runtime
+    builtin: true
+  }
+  // Future entries added here, e.g.:
   // { id: 'piaget', name: 'Piaget – Kognitive Entwicklung', desc: '…', builtin: false, locked: true }
 ];
-
-// Restore CACHE_NS from saved active topic immediately (before openDB)
-(function() {
-  try {
-    const savedId = localStorage.getItem(ACTIVE_TOPIC_KEY);
-    if (savedId) {
-      const entry = PODCAST_REGISTRY.find(p => p.id === savedId);
-      if (entry && entry.cacheNs) CACHE_NS = entry.cacheNs;
-    }
-  } catch(e) {}
-})();
 
 function openTopicManager() {
   document.getElementById('topicManagerOverlay').style.display = 'block';
@@ -4987,103 +5203,31 @@ function renderTopicList() {
     <div class="topic-card ${isActive ? 'topic-active' : ''}">
       <div style="flex:1;min-width:0;">
         <div class="topic-name">${isLocked ? '🔒 ' : ''}${p.name}</div>
-        <div class="topic-meta">${p.legacy ? '💬 Archiv · ' : count + ' Lernkarten · '}${p.desc}</div>
+        <div class="topic-meta">${count} Lernkarten · ${isLocked ? 'Demnächst' : p.desc}</div>
       </div>
       <div class="topic-actions">
         ${isActive
           ? '<span class="topic-btn active-btn">▶ Aktiv</span>'
           : isLocked
-            ? '<span class="topic-btn" style="opacity:0.4;cursor:default;">🔒 Bald</span>'
+            ? '<span class="topic-btn" style="opacity:0.4;cursor:default;">🔒 Gesperrt</span>'
             : `<button class="topic-btn" onclick="switchTopic('${p.id}')">Aktivieren</button>`}
       </div>
     </div>`;
   }).join('');
 }
 
-
-// ── REFRESH TURNS FROM DOM ───────────────────────────────
-function _refreshTurns() {
-  turns.length = 0;
-  var container = document.getElementById('podcastContent') || document;
-  container.querySelectorAll('.turn').forEach(function(turn) {
-    var isA = turn.querySelector('.speaker-a') !== null;
-    var nameEl = turn.querySelector('.name');
-    var text = '';
-    turn.querySelectorAll('.speech p').forEach(function(p) { text += p.innerText + ' '; });
-    var chapter = turn.closest('.chapter');
-    var chapterTitle = chapter ? (chapter.querySelector('.chapter-title') ? chapter.querySelector('.chapter-title').innerText.replace(/\n/g,' ') : '') : '';
-    turns.push({ el: turn, speaker: nameEl ? nameEl.innerText : (isA ? 'Alex' : 'Lena'), isA: isA, text: text.trim(), chapter: chapterTitle });
-  });
-}
-
-// ── APPLY VISUAL STYLE FOR ACTIVE TOPIC ─────────────────
-function _applyTopicStyle(id) {
-  var isDialog = id === 'hurrelmann-dialog';
-  var ep1Banner = document.getElementById('ep1');
-  if (ep1Banner) {
-    var label = ep1Banner.querySelector('span');
-    if (label) label.textContent = isDialog
-      ? '▶ Dialog-Format — Hurrelmann (Archiv)'
-      : '▶ Folge 1 — Hurrelmann Komplett';
-  }
-  var allTurns = (document.getElementById('podcastContent') || document).querySelectorAll('.turn');
-  allTurns.forEach(function(turn, i) {
-    var tag  = turn.querySelector('.speaker-tag');
-    var name = turn.querySelector('.name');
-    if (!tag || !name) return;
-    if (isDialog) {
-      var isAlex = i % 2 === 0;
-      tag.className  = 'speaker-tag ' + (isAlex ? 'speaker-a' : 'speaker-b');
-      name.textContent = isAlex ? 'Alex' : 'Lena';
-    } else {
-      tag.className  = 'speaker-tag speaker-a';
-      name.textContent = 'Guide';
-    }
-  });
-}
-
 function switchTopic(id) {
-  const entry = PODCAST_REGISTRY.find(p => p.id === id);
-  if (!entry) return;
-
-  // Stop any playing audio
-  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-  isPlaying = false;
-  currentIdx = -1;
-  const btnPlay = document.getElementById('btnPlay');
-  if (btnPlay) btnPlay.textContent = '▶ Play';
-
-  // Switch cache namespace so each podcast has its own audio store
-  if (entry.cacheNs) CACHE_NS = entry.cacheNs;
-
-  // Clear in-memory URL cache (blob/data URLs are namespace-specific)
-  clearUrlCache();
-
-  // Save active topic
   localStorage.setItem(ACTIVE_TOPIC_KEY, id);
-
-  // Update DOM: speaker names, tags, ep banner
-  _applyTopicStyle(id);
-
-  // Re-collect turns[] from updated DOM
-  _refreshTurns();
-
-  // Reset flashcards to match topic
-  fcDeck = [...FC_CARDS];
-  fcActiveCategory = null;
-  fcIdx = 0;
-  if (fcMode === 'free') fcRenderCard();
-  if (fcMode === 'sr') { srBuildQueue(); srRenderCurrentCard(); }
-
-  // Update UI
+  // Only 'hurrelmann' exists now; extend when more podcasts added
+  if (id === 'hurrelmann') {
+    fcDeck = [...FC_CARDS];
+    fcActiveCategory = null;
+    fcIdx = 0;
+    if (fcMode === 'free') fcRenderCard();
+    if (fcMode === 'sr') { srBuildQueue(); srRenderCurrentCard(); }
+  }
   renderTopicList();
-  updateCacheStatus();
-  const name = entry.name.split('–')[0].trim();
-  document.getElementById('playerSpeaker').textContent = '✅ ' + name + ' – drücke Play!';
-  document.getElementById('playerChapter').textContent = '🎙️ ' + (entry.legacy ? 'Archiv' : 'Podcast');
-
-  // Close topic manager
-  closeTopicManager();
+  document.getElementById('playerSpeaker').textContent = '🔀 Podcast gewechselt';
 }
 
 // ── SLEEP TIMER ──────────────────────────────────────────
@@ -5184,8 +5328,6 @@ function _renderSleepState() {
 // ── AUTO-SCROLL ──────────────────────────────────────────
 // autoScrollEnabled declared above near updateUI
 
-(function initHlBtn() { setTimeout(_updateHlBtn, 50); })();
-
 (function initAutoScroll() {
   // Restore saved preference
   try {
@@ -5201,31 +5343,6 @@ function toggleAutoScroll() {
   document.getElementById('playerSpeaker').textContent =
     autoScrollEnabled ? '📌 Auto-Scroll: An' : '📌 Auto-Scroll: Aus';
   try { localStorage.setItem('hurrelmann_autoscroll', autoScrollEnabled ? '1' : '0'); } catch(e) {}
-}
-
-function closeSetup() {
-  document.getElementById('setupOverlay').style.display = 'none';
-}
-
-function toggleWordHighlight() {
-  wordHighlightEnabled = !wordHighlightEnabled;
-  _updateHlBtn();
-  if (!wordHighlightEnabled) _clearWordHighlight();
-  try { localStorage.setItem('hurrelmann_wordhl', wordHighlightEnabled ? '1' : '0'); } catch(e){}
-  document.getElementById('playerSpeaker').textContent =
-    wordHighlightEnabled ? '💡 Wort-Highlighting: An' : '💡 Wort-Highlighting: Aus';
-}
-
-function _updateHlBtn() {
-  const btn = document.getElementById('hlBtn');
-  if (!btn) return;
-  if (wordHighlightEnabled) {
-    btn.classList.add('btn-active');
-    btn.title = 'Wort-Highlighting: An (klicken zum Deaktivieren)';
-  } else {
-    btn.classList.remove('btn-active');
-    btn.title = 'Wort-Highlighting: Aus (klicken zum Aktivieren)';
-  }
 }
 
 function _updateAutoScrollBtn() {
@@ -5338,14 +5455,13 @@ document.addEventListener('keydown', e => {
 
 async function clearCache() {
   if (!db) await openDB();
-  await new Promise((res) => {
+  await new Promise((res, rej) => {
     const req = db.transaction(STORE,'readwrite').objectStore(STORE).clear();
-    req.onsuccess = () => res(); req.onerror = () => res();
+    req.onsuccess = res; req.onerror = rej;
   });
-  clearUrlCache();
-  await updateCacheStatus();
-  const el = document.getElementById('cacheStatus');
-  if (el) el.textContent = '🗑️ Cache geleert – Audio wird beim nächsten Play neu geladen.';
+  Object.keys(urlCache).forEach(k => { URL.revokeObjectURL(urlCache[k]); delete urlCache[k]; });
+  updateCacheStatus();
+  alert('Cache geleert. Beim nächsten Abspielen wird der API-Key benötigt.');
 }
 </script>
 </body>
