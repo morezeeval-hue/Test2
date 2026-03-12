@@ -2533,7 +2533,7 @@ const _isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 // Cache namespace — change this whenever the spoken text changes significantly.
 // Old audio under old namespaces stays in IndexedDB but is never read.
 // Format: ns_<version>_<content-id>
-const CACHE_NS = 'ns_v3_narrator';
+let CACHE_NS = 'ns_v3_narrator'; // changes when topic switches
 
 async function getAudioURL(idx) {
   if (urlCache[idx]) return urlCache[idx];
@@ -4937,22 +4937,33 @@ const PODCAST_REGISTRY = [
     id: 'hurrelmann',
     name: 'Hurrelmann – Sozialisationstheorie',
     desc: 'Folge 1 & 2: Kerntheorie, 10 Prinzipien, Medienkompetenz, Medienscouts',
-    cardCount: null, // filled from FC_CARDS at runtime
-    builtin: true
+    cardCount: null,
+    builtin: true,
+    cacheNs: 'ns_v3_narrator'
   },
-  // Legacy: original dialog-format with two speakers (archive, not switchable)
   {
     id: 'hurrelmann-dialog',
     name: 'Hurrelmann – Dialog-Format (Archiv)',
-    desc: 'Original-Version mit zwei Sprechern Alex & Lena. Gleiche Inhalte, dialogischer Stil. Nicht mehr aktiv – nur als Referenz gespeichert.',
+    desc: 'Gleiche Inhalte, selbe Stimme – separater Audio-Cache. Für Vergleich oder falls du den anderen Cache löschen willst.',
     cardCount: 42,
     builtin: true,
     legacy: true,
-    locked: true
+    cacheNs: 'ns_v1_dialog'
   },
   // Future entries:
   // { id: 'piaget', name: 'Piaget – Kognitive Entwicklung', desc: '…', builtin: false, locked: true }
 ];
+
+// Restore CACHE_NS from saved active topic immediately (before openDB)
+(function() {
+  try {
+    const savedId = localStorage.getItem(ACTIVE_TOPIC_KEY);
+    if (savedId) {
+      const entry = PODCAST_REGISTRY.find(p => p.id === savedId);
+      if (entry && entry.cacheNs) CACHE_NS = entry.cacheNs;
+    }
+  } catch(e) {}
+})();
 
 function openTopicManager() {
   document.getElementById('topicManagerOverlay').style.display = 'block';
@@ -4973,14 +4984,12 @@ function renderTopicList() {
     <div class="topic-card ${isActive ? 'topic-active' : ''}">
       <div style="flex:1;min-width:0;">
         <div class="topic-name">${isLocked ? '🔒 ' : ''}${p.name}</div>
-        <div class="topic-meta">${p.legacy ? '💬 Archiv · ' : count + ' Lernkarten · '}${isLocked ? 'Demnächst' : p.desc}</div>
+        <div class="topic-meta">${p.legacy ? '💬 Archiv · ' : count + ' Lernkarten · '}${p.desc}</div>
       </div>
       <div class="topic-actions">
         ${isActive
           ? '<span class="topic-btn active-btn">▶ Aktiv</span>'
-          : (isLocked && p.legacy)
-            ? '<span class="topic-btn" style="opacity:0.55;cursor:default;font-size:10px;">💬 Archiv</span>'
-            : isLocked
+          : isLocked
             ? '<span class="topic-btn" style="opacity:0.4;cursor:default;">🔒 Bald</span>'
             : `<button class="topic-btn" onclick="switchTopic('${p.id}')">Aktivieren</button>`}
       </div>
@@ -4989,18 +4998,41 @@ function renderTopicList() {
 }
 
 function switchTopic(id) {
-  if (id === 'hurrelmann-dialog') return; // archived, not switchable
+  const entry = PODCAST_REGISTRY.find(p => p.id === id);
+  if (!entry) return;
+
+  // Stop any playing audio
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  isPlaying = false;
+  currentIdx = -1;
+  const btnPlay = document.getElementById('btnPlay');
+  if (btnPlay) btnPlay.textContent = '▶ Play';
+
+  // Switch cache namespace so each podcast has its own audio store
+  if (entry.cacheNs) CACHE_NS = entry.cacheNs;
+
+  // Clear in-memory URL cache (blob/data URLs are namespace-specific)
+  clearUrlCache();
+
+  // Save active topic
   localStorage.setItem(ACTIVE_TOPIC_KEY, id);
-  // Only 'hurrelmann' exists now; extend when more podcasts added
-  if (id === 'hurrelmann') {
-    fcDeck = [...FC_CARDS];
-    fcActiveCategory = null;
-    fcIdx = 0;
-    if (fcMode === 'free') fcRenderCard();
-    if (fcMode === 'sr') { srBuildQueue(); srRenderCurrentCard(); }
-  }
+
+  // Reset flashcards to match topic
+  fcDeck = [...FC_CARDS];
+  fcActiveCategory = null;
+  fcIdx = 0;
+  if (fcMode === 'free') fcRenderCard();
+  if (fcMode === 'sr') { srBuildQueue(); srRenderCurrentCard(); }
+
+  // Update UI
   renderTopicList();
-  document.getElementById('playerSpeaker').textContent = '🔀 Podcast gewechselt';
+  updateCacheStatus();
+  const name = entry.name.split('–')[0].trim();
+  document.getElementById('playerSpeaker').textContent = '✅ ' + name + ' – drücke Play!';
+  document.getElementById('playerChapter').textContent = '🎙️ ' + (entry.legacy ? 'Archiv' : 'Podcast');
+
+  // Close topic manager
+  closeTopicManager();
 }
 
 // ── SLEEP TIMER ──────────────────────────────────────────
