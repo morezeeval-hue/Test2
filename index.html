@@ -4940,14 +4940,15 @@ const PODCAST_REGISTRY = [
     cardCount: null, // filled from FC_CARDS at runtime
     builtin: true
   },
-  // Legacy: original dialog-format with two speakers
+  // Legacy: original dialog-format with two speakers (archive, not switchable)
   {
     id: 'hurrelmann-dialog',
     name: 'Hurrelmann – Dialog-Format (Archiv)',
-    desc: 'Original-Version mit zwei Sprechern Alex & Lena. Gleiche Inhalte, dialogischer Stil. Audio-Cache könnte noch ältere Aufnahmen enthalten.',
+    desc: 'Original-Version mit zwei Sprechern Alex & Lena. Gleiche Inhalte, dialogischer Stil. Nicht mehr aktiv – nur als Referenz gespeichert.',
     cardCount: 42,
     builtin: true,
-    legacy: true
+    legacy: true,
+    locked: true
   },
   // Future entries:
   // { id: 'piaget', name: 'Piaget – Kognitive Entwicklung', desc: '…', builtin: false, locked: true }
@@ -4977,8 +4978,10 @@ function renderTopicList() {
       <div class="topic-actions">
         ${isActive
           ? '<span class="topic-btn active-btn">▶ Aktiv</span>'
-          : isLocked
-            ? '<span class="topic-btn" style="opacity:0.4;cursor:default;">🔒 Gesperrt</span>'
+          : (isLocked && p.legacy)
+            ? '<span class="topic-btn" style="opacity:0.55;cursor:default;font-size:10px;">💬 Archiv</span>'
+            : isLocked
+            ? '<span class="topic-btn" style="opacity:0.4;cursor:default;">🔒 Bald</span>'
             : `<button class="topic-btn" onclick="switchTopic('${p.id}')">Aktivieren</button>`}
       </div>
     </div>`;
@@ -4986,10 +4989,7 @@ function renderTopicList() {
 }
 
 function switchTopic(id) {
-  if (id === 'hurrelmann-dialog') {
-    alert('💬 Dialog-Format (Archiv)\n\nDiese Version mit zwei Sprechern (Alex & Lena) ist archiviert. Alle Lerninhalte, Karten und Quizze basieren weiterhin auf denselben Inhalten. Der Audio-Cache kann unter 🔑 API-Keys → Cache leeren zurückgesetzt werden.');
-    return;
-  }
+  if (id === 'hurrelmann-dialog') return; // archived, not switchable
   localStorage.setItem(ACTIVE_TOPIC_KEY, id);
   // Only 'hurrelmann' exists now; extend when more podcasts added
   if (id === 'hurrelmann') {
